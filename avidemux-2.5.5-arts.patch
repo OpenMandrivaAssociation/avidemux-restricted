@@ -1,0 +1,10 @@
+diff -urN avidemux_2.5.5/cmake/FindArts.cmake avidemux_2.5.5-patched/cmake/FindArts.cmake
+--- avidemux_2.5.5/cmake/FindArts.cmake	2011-07-09 14:40:01.105374108 +1100
++++ avidemux_2.5.5-patched/cmake/FindArts.cmake	2011-07-09 14:40:13.745374112 +1100
+@@ -12,5 +12,5 @@
+       OUTPUT_VARIABLE ARTS_LDFLAGS
+       OUTPUT_STRIP_TRAILING_WHITESPACE)
+ 
+-    SET(ARTS_FOUND TRUE)
++    SET(ARTS_FOUND FALSE)
+ ENDIF(ARTS_CONFIG_EXECUTABLE)

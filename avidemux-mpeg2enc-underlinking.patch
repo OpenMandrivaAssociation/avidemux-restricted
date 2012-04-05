@@ -1,0 +1,11 @@
+diff -p -up avidemux_2.5.4/plugins/ADM_videoEncoder/ADM_vidEnc_mpeg2enc/mpeg2enc/CMakeLists.txt.orig avidemux_2.5.4/plugins/ADM_videoEncoder/ADM_vidEnc_mpeg2enc/mpeg2enc/CMakeLists.txt
+--- avidemux_2.5.4/plugins/ADM_videoEncoder/ADM_vidEnc_mpeg2enc/mpeg2enc/CMakeLists.txt.orig	2010-05-12 19:32:29.000000000 +0200
++++ avidemux_2.5.4/plugins/ADM_videoEncoder/ADM_vidEnc_mpeg2enc/mpeg2enc/CMakeLists.txt	2010-12-06 12:38:29.000000000 +0100
+@@ -43,6 +43,7 @@ ELSEIF (ADM_CPU_ALTIVEC)
+ ENDIF (ADM_CPU_X86)
+ 
+ add_library(${ADM_LIB} ${${ADM_LIB}_SRCS})
++TARGET_LINK_LIBRARIES(${ADM_LIB} ADM_core)
+ 
+ if (UNIX)
+ 	add_target_cflags(mpeg2enc -fPIC)

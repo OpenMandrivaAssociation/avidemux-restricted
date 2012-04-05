@@ -1,0 +1,13 @@
+Index: avidemux_2.5.3/plugins/ADM_audioDevices/Jack/CMakeLists.txt
+===================================================================
+--- avidemux_2.5.3/plugins/ADM_audioDevices/Jack/CMakeLists.txt
++++ avidemux_2.5.3/plugins/ADM_audioDevices/Jack/CMakeLists.txt	2010-09-01 06:58:00.718756937 +0300
+@@ -4,7 +4,7 @@
+ 
+ add_definitions(-DUSE_SRC)
+ ADD_LIBRARY(ADM_av_jack SHARED ${ADM_av_jack_SRCS})
+-TARGET_LINK_LIBRARIES(ADM_av_jack ${JACK_LIBRARY_DIR})
++TARGET_LINK_LIBRARIES(ADM_av_jack ADM_coreAudio ${JACK_LIBRARY_DIR})
+ include_directories("${JACK_INCLUDE_DIR}" "${AVIDEMUX_SOURCE_DIR}/avidemux/ADM_coreAudio/src/ADM_libsamplerate")
+ 
+ INIT_AUDIO_DEVICE(ADM_av_jack)
