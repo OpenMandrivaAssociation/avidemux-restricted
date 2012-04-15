@@ -14,7 +14,12 @@
 %bcond_with plf
 %define with_x264 0
 
-%if %with plf
+########################
+# Hardcode PLF build
+%define build_plf 1
+########################
+
+%if %{build_plf}
 %define distsuffix plf
 %if %mdvver >= 201100
 # make EVR of plf build higher than regular to allow update, needed with rpm5 mkrel
@@ -60,7 +65,7 @@ BuildRequires:	cmake
 BuildRequires:	libxslt-proc
 # not packaged yet:
 #BuildRequires:  libaften-devel
-%if %with plf
+%if %{build_plf}
 BuildRequires:	libxvid-devel
 BuildRequires:	liblame-devel
 BuildRequires:	libfaad2-devel
@@ -81,7 +86,7 @@ AVI, DVD compatible MPEG files, MP4 and ASF, using a variety of
 codecs. Tasks can be automated using projects, job queue and
 powerful scripting capabilities.
 
-%if %with plf
+%if %{build_plf}
 This package is in restricted because this build has support for codecs
 covered by software patents.
 %endif
@@ -117,7 +122,7 @@ Provides: avidemux-ui = %{version}-%{release}
 Avidemux is a free video editor. This package contains the
 version with a command-line interface.
 
-%if %with plf
+%if %{build_plf}
 This package is in restricted because this build has support for codecs
 covered by software patents.
 %endif
@@ -252,7 +257,7 @@ rm -rf %{buildroot}
 %dir %{_libdir}/ADM_plugins/audioDecoder
 %{_libdir}/ADM_plugins/audioDecoder/libADM_ad_Mad.so
 %{_libdir}/ADM_plugins/audioDecoder/libADM_ad_a52.so
-%if %with plf
+%if %{build_plf}
 %{_libdir}/ADM_plugins/audioDecoder/libADM_ad_opencore_amrnb.so
 %{_libdir}/ADM_plugins/audioDecoder/libADM_ad_opencore_amrwb.so
 %{_libdir}/ADM_plugins/audioDecoder/libADM_ad_faad.so
@@ -272,7 +277,7 @@ rm -rf %{buildroot}
 %{_libdir}/ADM_plugins/audioEncoders/libADM_ae_pcm.so
 %{_libdir}/ADM_plugins/audioEncoders/libADM_ae_twolame.so
 %{_libdir}/ADM_plugins/audioEncoders/libADM_ae_vorbis.so
-%if %with plf
+%if %{build_plf}
 %{_libdir}/ADM_plugins/audioEncoders/libADM_ae_faac.so
 %{_libdir}/ADM_plugins/audioEncoders/libADM_ae_lame.so
 %dir %{_libdir}/ADM_plugins/videoEncoder
@@ -363,7 +368,7 @@ rm -rf %{buildroot}
 %{_datadir}/applications/mandriva-avidemux-gtk.desktop
 %{_libdir}/libADM_render_gtk.so
 %{_libdir}/libADM_UIGtk.so
-%if %with plf
+%if %{build_plf}
 %if %with_x264
 %{_libdir}/ADM_plugins/videoEncoder/x264/libADM_vidEnc_x264_Gtk.so
 %endif
@@ -392,7 +397,7 @@ rm -rf %{buildroot}
 %{_datadir}/%{name}/i18n/*.qm
 %{_libdir}/libADM_render_qt4.so
 %{_libdir}/libADM_UIQT4.so
-%if %with plf
+%if %{build_plf}
 %if %with_x264
 %{_libdir}/ADM_plugins/videoEncoder/x264/libADM_vidEnc_x264_Qt.so
 %endif
