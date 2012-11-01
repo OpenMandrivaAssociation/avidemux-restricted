@@ -1,0 +1,15 @@
+--- cmake/admCheckRequiredLibs.cmake~	2009-01-01 11:45:10.000000000 -0500
++++ cmake/admCheckRequiredLibs.cmake	2012-08-04 19:18:20.358688927 -0400
+@@ -4,11 +4,7 @@
+ MESSAGE(STATUS "Checking for pkg-config")
+ MESSAGE(STATUS "***********************")
+ 
+-FIND_PACKAGE(PkgConfig)
+-
+-IF (NOT PKG_CONFIG_FOUND)
+-	MESSAGE(FATAL_ERROR "Could not find pkg-config")
+-ENDIF (NOT PKG_CONFIG_FOUND)
++FIND_PACKAGE(PkgConfig REQUIRED)
+ 
+ MESSAGE(STATUS "Found pkg-config")
+ 
