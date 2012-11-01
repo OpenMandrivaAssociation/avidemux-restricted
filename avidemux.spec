@@ -1,3 +1,5 @@
+%define filename %{name}_%{version}
+
 #############################
 # Hardcore PLF build
 # bcond_with or bcond_without
@@ -140,7 +142,7 @@ make
 # in build/ by symlinking all libraries to build/lib/
 mkdir -p %{_lib}
 cd %{_lib}
-find ../avidemux -name '*.so*' | xargs ln -sft . 
+find ../avidemux -name '*.so*' | xargs ln -sft .
 cd ../../plugins
 %cmake -DAVIDEMUX_SOURCE_DIR=%{_builddir}/%{filename} -DAVIDEMUX_CORECONFIG_DIR=%{_builddir}/%{filename}/build/config -DAVIDEMUX_INSTALL_PREFIX=%{_builddir}/%{filename}/build
 make
