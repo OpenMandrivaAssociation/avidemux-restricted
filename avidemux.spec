@@ -240,7 +240,6 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins/videoEncoder/libADM_vidEnc_x264.so
 %{_libdir}/ADM_plugins/videoEncoder/x264/*.xml
 %{_libdir}/ADM_plugins/videoEncoder/x264/*.xsd
-%endif
 %{_libdir}/ADM_plugins/videoEncoder/libADM_vidEnc_xvid.so
 %dir %{_libdir}/ADM_plugins/videoEncoder/xvid
 %{_libdir}/ADM_plugins/videoEncoder/xvid/*.xsd
