@@ -1,0 +1,76 @@
+--- avidemux/cli/CMakeLists.txt.orig	2013-12-06 07:33:08.000000000 +0100
++++ avidemux/cli/CMakeLists.txt	2013-12-09 11:37:09.197249000 +0100
+@@ -102,6 +102,16 @@
+ )
+ 
+ ###########################################
++# Missing libs
++###########################################
++TARGET_LINK_LIBRARIES(avidemux3_cli
++	ADM_coreSqlLight3
++	ADM_libswscale
++	ADM_libpostproc
++	ADM_libavformat
++)
++
++###########################################
+ # External libs
+ ###########################################
+ # gettext
+--- avidemux/gtk/CMakeLists.txt.orig	2013-12-06 07:33:08.000000000 +0100
++++ avidemux/gtk/CMakeLists.txt	2013-12-09 11:37:11.447018600 +0100
+@@ -102,6 +102,16 @@
+ )
+ 
+ ###########################################
++# Missing libs
++###########################################
++TARGET_LINK_LIBRARIES(avidemux3_gtk
++	ADM_coreSqlLight3
++	ADM_libswscale
++	ADM_libpostproc
++	ADM_libavformat
++)
++
++###########################################
+ # External libs
+ ###########################################
+ # gettext
+--- avidemux/qt4/CMakeLists.txt.orig	2013-12-06 07:33:08.000000000 +0100
++++ avidemux/qt4/CMakeLists.txt	2013-12-09 11:37:13.759281800 +0100
+@@ -140,6 +140,16 @@
+ )
+ 
+ ###########################################
++# Missing libs
++###########################################
++TARGET_LINK_LIBRARIES(avidemux3_qt4
++	ADM_coreSqlLight3
++	ADM_libswscale
++	ADM_libpostproc
++	ADM_libavformat
++)
++
++###########################################
+ # External libs
+ ###########################################
+ # gettext
+--- avidemux/qt4/ADM_jobs/src/CMakeLists.txt.orig	2013-12-06 07:33:08.000000000 +0100
++++ avidemux/qt4/ADM_jobs/src/CMakeLists.txt	2013-12-09 11:37:16.040298200 +0100
+@@ -90,6 +90,16 @@
+ TARGET_LINK_LIBRARIES(avidemux3_jobs ADM_coreJobs)
+ TARGET_LINK_LIBRARIES(avidemux3_jobs ADM_coreUtils6)
+ TARGET_LINK_LIBRARIES(avidemux3_jobs ADM_core6)
++###########################################
++# Missing libs
++###########################################
++TARGET_LINK_LIBRARIES(avidemux3_jobs
++	ADM_coreSqlLight3
++	ADM_coreUI6
++	ADM_libavcodec
++	ADM_libavutil
++)
++
+ #
+ target_link_libraries(avidemux3_jobs "-lm -lstdc++")
+ #

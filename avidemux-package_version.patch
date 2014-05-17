@@ -1,0 +1,82 @@
+--- avidemux/qt4/ADM_userInterfaces/ui_support.cpp.orig	2014-03-14 13:16:11.948145100 +0100
++++ avidemux/qt4/ADM_userInterfaces/ui_support.cpp	2014-03-14 13:34:19.661718900 +0100
+@@ -95,12 +95,12 @@
+         }
+         ADM_info("Initializing language %s\n",lang);
+ #ifdef __APPLE__
+-	QString appdir = QCoreApplication::applicationDirPath() + "/../share/avidemux6/i18n/";
++	QString appdir = QCoreApplication::applicationDirPath() + "/../share/avidemux3/i18n/";
+                 
+ #elif defined(_WIN32)
+ 	QString appdir = QCoreApplication::applicationDirPath() + "/i18n/";
+ #else
+-	QString appdir = ADM_getInstallRelativePath("share","avidemux6","i18n");
++	QString appdir = ADM_getInstallRelativePath("share","avidemux3","i18n");
+ #endif
+         QString languageFile=QString(lang);
+     int nbLoaded=0;
+--- avidemux/qt4/ADM_userInterfaces/ADM_gui/Q_gui2_menu.cpp.orig	2014-03-14 13:19:05.743017000 +0100
++++ avidemux/qt4/ADM_userInterfaces/ADM_gui/Q_gui2_menu.cpp	2014-03-14 13:34:21.849218900 +0100
+@@ -143,7 +143,7 @@
+     QString referenceFile = QCoreApplication::applicationDirPath() + "/help/" + ((FileAction*)sender())->filePath();
+ #else
+     QString referenceFile = ADM_getInstallRelativePath(
+-                                "share", "avidemux6/help", ((FileAction*)sender())->filePath().toUtf8().constData());
++                                "share", "avidemux3/help", ((FileAction*)sender())->filePath().toUtf8().constData());
+ #endif
+ 
+     QDesktopServices::openUrl(QUrl("file:///" + referenceFile, QUrl::TolerantMode));
+--- avidemux_core/ADM_core/src/ADM_fileio.cpp.orig	2014-03-14 13:21:28.788976500 +0100
++++ avidemux_core/ADM_core/src/ADM_fileio.cpp	2014-03-14 13:34:24.302343900 +0100
+@@ -463,9 +463,9 @@
+ 		else
+ 			ADM_DIR_NAME = "avidemux";
+ #elif defined __HAIKU__
+-		const char *ADM_DIR_NAME = "config/settings/avidemux6";
++		const char *ADM_DIR_NAME = "config/settings/avidemux3";
+ #else
+-		const char *ADM_DIR_NAME = ".avidemux6";
++		const char *ADM_DIR_NAME = ".avidemux3";
+ #endif
+ 
+ 		strcat(ADM_basedir, ADM_DIR_NAME);
+--- avidemux_plugins/ADM_scriptEngines/tinyPy/src/PythonEngine.cpp.orig	2014-03-14 13:23:56.381781900 +0100
++++ avidemux_plugins/ADM_scriptEngines/tinyPy/src/PythonEngine.cpp	2014-03-14 13:34:26.489843900 +0100
+@@ -260,7 +260,7 @@
+ 		this->callEventHandlers(IScriptEngine::Information, NULL, -1,
+ 			(string("Executing ") + string(name) + string("...")).c_str());
+ 
+-		tp_import(_vm, name.c_str(), "avidemux6", NULL, 0);
++		tp_import(_vm, name.c_str(), "avidemux3", NULL, 0);
+ 
+ 		this->callEventHandlers(IScriptEngine::Information, NULL, -1, "Done");
+ 
+--- cmake/se_plugin.cmake.orig	2014-03-14 13:26:16.005888300 +0100
++++ cmake/se_plugin.cmake	2014-03-14 13:34:28.724218900 +0100
+@@ -12,7 +12,7 @@
+ if (WIN32)
+     set(helpDir "${CMAKE_INSTALL_PREFIX}/help/${_engineName}")
+ else (WIN32)
+-    set(helpDir "${CMAKE_INSTALL_PREFIX}/share/avidemux6/help/${_engineName}")
++    set(helpDir "${CMAKE_INSTALL_PREFIX}/share/avidemux3/help/${_engineName}")
+ endif (WIN32)
+ 
+     install(DIRECTORY "${_sourceDirectory}" DESTINATION "${helpDir}")
+--- cmake/Ts.cmake.orig	2014-03-14 13:30:09.942968900 +0100
++++ cmake/Ts.cmake	2014-03-14 13:34:30.583593900 +0100
+@@ -41,7 +41,7 @@
+         IF(WIN32)
+                 SET(i18dir "${CMAKE_INSTALL_PREFIX}/${BIN_DIR}/i18n")
+         ELSE(WIN32)
+-                SET(i18dir "${CMAKE_INSTALL_PREFIX}/share/avidemux6/i18n")
++                SET(i18dir "${CMAKE_INSTALL_PREFIX}/share/avidemux3/i18n")
+         ENDIF(WIN32)
+         INSTALL(FILES ${_files} DESTINATION "${i18dir}")
+ ENDMACRO(INSTALL_I18N _files)
+--- cmake/sql/update.sh.orig	2014-03-14 13:31:34.614843900 +0100
++++ cmake/sql/update.sh	2014-03-14 13:34:32.864843900 +0100
+@@ -1,3 +1,3 @@
+-sqlite3 ~/.avidemux6/jobs.sql .d > dump
++sqlite3 ~/.avidemux3/jobs.sql .d > dump
+ #sql2class -sqlite -global -license -wrapped  -lib $PWD dump
+ sql2class -sqlite -build -global -prefix $PWD -lib sqlJobs -namespace db -overwrite dump
