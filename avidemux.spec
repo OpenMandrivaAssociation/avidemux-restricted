@@ -33,7 +33,7 @@ Patch3:         avidemux-package_version.patch
 
 BuildRequires:	cmake
 BuildRequires:	imagemagick
-BuildRequires:	libxslt-proc
+BuildRequires:	xsltproc
 BuildRequires:	nasm
 BuildRequires:	qt4-linguist
 BuildRequires:	yasm yasm-devel
