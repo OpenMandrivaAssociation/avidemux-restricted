@@ -23,7 +23,7 @@ Url:		http://fixounet.free.fr/avidemux
 Source0:	http://downloads.sourceforge.net/project/%{name}/%{name}/%{version}/%{filename}.tar.gz
 Source3:        ffmpeg-%{ffmpeg_version}.tar.bz2
 Source4:        xvba_support_from_xbmc_xvba.patch
-Source100:	%{name}.rplintrc
+Source100:	%{name}.rpmlintrc
 
 Patch0:         avidemux-cmake-2.8.8.patch
 Patch1:         avidemux-linking.patch
