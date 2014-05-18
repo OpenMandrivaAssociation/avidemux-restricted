@@ -130,7 +130,7 @@ covered by software patents.
 %setup -qn %{filename}
 # convert docs
 find . -type f -exec dos2unix -q {} \;
-# replace old ffmpeg and build it
+# replace old ffmpeg and build it for the core.
 sed -i -e 's|set(FFMPEG_VERSION "1.2.1")|set(FFMPEG_VERSION "%{ffmpeg_version}")|g' cmake/admFFmpegBuild.cmake
 rm -f avidemux_core/ffmpeg_package/ffmpeg-1.2.1.tar.bz2
 cp %{S:3} avidemux_core/ffmpeg_package/
@@ -201,11 +201,19 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
+# man
+%{_mandir}/man1/avidemux.1.gz
+# TODO: maybe split help and lang packages.
+# lang
+%dir %{_datadir}/avidemux3
+%{_datadir}/avidemux3/help/
+# help files
+%{_datadir}/avidemux3/i18n/
+#
 %{_libdir}/libADM6postproc.so.52
 %{_libdir}/libADM6avcodec.so.54
 %{_libdir}/libADM6avformat.so.54
 %{_libdir}/libADM6avutil.so.52
-%{_libdir}/libADM6postproc.so.52
 %{_libdir}/libADM6swscale.so.2
 %{_libdir}/libADM_audioParser6.so
 %{_libdir}/libADM_core6.so
@@ -349,10 +357,8 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %dir %{_datadir}/ADM6_addons/avsfilter
 %{_datadir}/ADM6_addons/avsfilter/avsload.exe
 %{_datadir}/ADM6_addons/avsfilter/pipe_source.dll
-%{_mandir}/man1/avidemux.1.gz
-%dir %{_datadir}/avidemux
-%{_datadir}/avidemux/help/
-%{_datadir}/avidemux/i18n/
+
+#
 %if %with plf
 %{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_faac.so
 %{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_lame.so
