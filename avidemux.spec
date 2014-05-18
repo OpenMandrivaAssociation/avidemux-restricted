@@ -138,6 +138,8 @@ pushd avidemux_core/ffmpeg_package/patches/xvba
 rm -f xvba_support_from_xbmc_xvba.patch
 cp %{S:4} .
 popd
+# fix some linting
+find . -type f -exec chmod -x {} \;
 # apply paches
 %patch0 -p0
 %patch1 -p0
