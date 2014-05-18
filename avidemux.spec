@@ -66,13 +66,12 @@ BuildRequires:  pkgconfig(vpx)
 BuildRequires:  pkgconfig(twolame)
 BuildRequires:  aften-devel
 BuildRequires:  pkgconfig(dcaenc)
-BuildRequires:  xvid-devel
 BuildRequires:  pkgconfig(cairo)
 %if %with plf
 BuildRequires:	libfaac-devel
 BuildRequires:	libfaad2-devel
 BuildRequires:	liblame-devel
-BuildRequires:	libxvid-devel
+BuildRequires:	xvid-devel
 BuildRequires:	pkgconfig(opencore-amrnb)
 BuildRequires:	pkgconfig(opencore-amrwb)
 BuildRequires:	pkgconfig(x264)
@@ -194,9 +193,10 @@ install -D -m644 man/avidemux.1 %{buildroot}%{_mandir}/man1/avidemux.1
 rm -rf %{buildroot}%{_includedir}
 rm -rf %{buildroot}%{_datadir}/locale/klingon
 
-%find_lang %{name}
+#find_lang %{name}
 
-%files -f %{name}.lang
+#files -f %{name}.lang
+%files
 %doc AUTHORS COPYING README
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
@@ -239,8 +239,6 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %dir %{_libdir}/ADM_plugins6/demuxers
 %dir %{_libdir}/ADM_plugins6/muxers
 %dir %{_libdir}/ADM_plugins6/pluginSettings
-%dir %{_libdir}/ADM_plugins6/pluginSettings/x264
-%dir %{_libdir}/ADM_plugins6/pluginSettings/x264/3
 %dir %{_libdir}/ADM_plugins6/scriptEngines
 %dir %{_libdir}/ADM_plugins6/videoDecoders
 %dir %{_libdir}/ADM_plugins6/videoEncoders
@@ -252,8 +250,6 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_lav.so
 %{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_Mad.so
 %{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_ms_adpcm.so
-%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_opencore_amrnb.so
-%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_opencore_amrwb.so
 %{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_ulaw.so
 %{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_vorbis.so
 %{_libdir}/ADM_plugins6/audioDevices/libADM_av_alsaDefault.so
@@ -265,9 +261,6 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/audioDevices/libADM_av_pulseAudioSimple.so
 %{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_aften.so
 %{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_dcaenc.so
-%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_faac.so
-%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_lame.so
-%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_lav_aac.so
 %{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_lav_ac3.so
 %{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_lav_mp2.so
 %{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_pcm.so
@@ -300,11 +293,6 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/muxers/libADM_mx_mp4.so
 %{_libdir}/ADM_plugins6/muxers/libADM_mx_mp4v2.so
 %{_libdir}/ADM_plugins6/muxers/libADM_mx_raw.so
-%{_libdir}/ADM_plugins6/pluginSettings/x264/3/ultraFast.json
-%{_libdir}/ADM_plugins6/pluginSettings/x264/3/PSP.json
-%{_libdir}/ADM_plugins6/pluginSettings/x264/3/veryFast.json
-%{_libdir}/ADM_plugins6/pluginSettings/x264/3/fast.json
-%{_libdir}/ADM_plugins6/pluginSettings/x264/3/iPhone.json
 %{_libdir}/ADM_plugins6/scriptEngines/libADM_script_qt.so
 %{_libdir}/ADM_plugins6/scriptEngines/libADM_script_spiderMonkey.so
 %{_libdir}/ADM_plugins6/scriptEngines/libADM_script_tinyPy.so
@@ -317,7 +305,6 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_jpeg.so
 %{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_null.so
 %{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_png.so
-%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_xvid4.so
 %{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_yv12.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_hf_hflip.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_addBorders.so
@@ -365,7 +352,22 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_mandir}/man1/avidemux.1.gz
 %dir %{_datadir}/avidemux
 %{_datadir}/avidemux/help/
-#%{_datadir}/avidemux/i18n/
+%{_datadir}/avidemux/i18n/
+%if %with plf
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_faac.so
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_lame.so
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_lav_aac.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_xvid4.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_opencore_amrnb.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_opencore_amrwb.so
+%dir %{_libdir}/ADM_plugins6/pluginSettings/x264
+%dir %{_libdir}/ADM_plugins6/pluginSettings/x264/3
+%{_libdir}/ADM_plugins6/pluginSettings/x264/3/ultraFast.json
+%{_libdir}/ADM_plugins6/pluginSettings/x264/3/PSP.json
+%{_libdir}/ADM_plugins6/pluginSettings/x264/3/veryFast.json
+%{_libdir}/ADM_plugins6/pluginSettings/x264/3/fast.json
+%{_libdir}/ADM_plugins6/pluginSettings/x264/3/iPhone.json
+%endif
 
 %files gtk
 %doc AUTHORS COPYING README
@@ -417,7 +419,6 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_glade/videoFilter/thumbnail.png
 %{_libdir}/ADM_glade/videoFilter/up.png
 %{_libdir}/ADM_glade/videoFilter/videoFilter.gtkBuilder
-%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_gtk.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_asharpGtk.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_chromaShiftGtk.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_contrastGtk.so
@@ -425,6 +426,10 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_eq2Gtk.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_HueGtk.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_swscaleResize_gtk.so
+%if %with plf
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_gtk.so
+%endif
+
 
 %files qt
 %doc AUTHORS COPYING README
@@ -433,7 +438,6 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_bindir}/avidemux3_qt4
 %{_libdir}/libADM_render6_qt4.so
 %{_libdir}/libADM_UIQT46.so
-%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_qt4.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_asharpQt4.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_chromaShiftQt4.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_contrastQt4.so
@@ -447,13 +451,15 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_sampleGlFrag2.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_sampleGlVertex.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_swscaleResize_qt4.so
+%if %with plf
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_qt4.so
+%endif
 
 %files cli
 %doc README
 %{_bindir}/avidemux3_cli
 %{_libdir}/libADM_render6_cli.so
 %{_libdir}/libADM_UI_Cli6.so
-%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_cli.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_chromaShiftCli.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_contrastCli.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_CropCli.so
@@ -461,4 +467,6 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_HueCli.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_mpdelogoCli.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_swscaleResize_cli.so
-
+%if %with plf
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_cli.so
+%endif
