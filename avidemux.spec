@@ -202,7 +202,7 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
 # man
-%{_mandir}/man1/avidemux.1.gz
+%{_mandir}/man1/avidemux.1.*
 # TODO: maybe split help and lang packages.
 # lang
 %dir %{_datadir}/avidemux3
