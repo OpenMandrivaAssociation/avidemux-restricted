@@ -23,6 +23,7 @@ Url:		http://fixounet.free.fr/avidemux
 Source0:	http://downloads.sourceforge.net/project/%{name}/%{name}/%{version}/%{filename}.tar.gz
 Source3:        ffmpeg-%{ffmpeg_version}.tar.bz2
 Source4:        xvba_support_from_xbmc_xvba.patch
+Source100:	%{name}.rplintrc
 
 Patch0:         avidemux-cmake-2.8.8.patch
 Patch1:         avidemux-linking.patch
@@ -138,8 +139,6 @@ pushd avidemux_core/ffmpeg_package/patches/xvba
 rm -f xvba_support_from_xbmc_xvba.patch
 cp %{S:4} .
 popd
-# fix some linting
-find . -type f -exec chmod -x {} \;
 # apply paches
 %patch0 -p0
 %patch1 -p0
@@ -204,7 +203,7 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
 # man
-%{_mandir}/man1/avidemux.1.*
+%{_mandir}/man1/avidemux.1.gz
 # TODO: maybe split help and lang packages.
 # lang
 %dir %{_datadir}/avidemux3
