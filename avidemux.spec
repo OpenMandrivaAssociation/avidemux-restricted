@@ -1,5 +1,6 @@
 %define filename %{name}_%{version}
-
+######################
+# to build ths need to add non-free, contrib,main, and restricted at the build time.
 #############################
 # Hardcore PLF build
 # bcond_with or bcond_without
