@@ -77,7 +77,7 @@ BuildRequires:	pkgconfig(opencore-amrnb)
 BuildRequires:	pkgconfig(opencore-amrwb)
 BuildRequires:	pkgconfig(x264)
 %endif
-Requires:	avidemux-ui
+Requires:	avidemux-ui = %{version}-%{release}
 
 %description
 Avidemux is a free video editor designed for simple cutting,
@@ -171,7 +171,7 @@ cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-gtk.desktop << EOF
 [Desktop Entry]
 Name=Avidemux
 Comment=A free video editor
-Exec=%{_bindir}/%{name}2_gtk %U
+Exec=%{_bindir}/%{name}3_gtk %U
 Icon=%{name}
 Terminal=false
 Type=Application
@@ -182,7 +182,7 @@ cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-qt.desktop << EOF
 [Desktop Entry]
 Name=Avidemux
 Comment=A free video editor
-Exec=%{_bindir}/%{name}2_qt4 %U
+Exec=%{_bindir}/%{name}3_qt4 %U
 Icon=%{name}
 Terminal=false
 Type=Application
