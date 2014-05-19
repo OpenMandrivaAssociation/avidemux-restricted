@@ -91,17 +91,17 @@ powerful scripting capabilities.
 This package is in restricted because this build has support for codecs
 covered by software patents.
 %endif
+#
+#%package gtk
+#Summary:	A free video editor - GTK GUI
+#Group:		Video
+#Requires:	gtk+3.0 >= 3.8.6
+#Requires:	%{name} = %{version}-%{release}
+#Provides:	avidemux-ui = %{version}-%{release}
 
-%package gtk
-Summary:	A free video editor - GTK GUI
-Group:		Video
-Requires:	gtk+3.0 >= 3.8.6
-Requires:	%{name} = %{version}-%{release}
-Provides:	avidemux-ui = %{version}-%{release}
-
-%description gtk
-Avidemux is a free video editor. This package contains the
-version with a graphical user interface based on GTK.
+#%description gtk
+#Avidemux is a free video editor. This package contains the
+#version with a graphical user interface based on GTK.
 
 %package qt
 Summary:	A free video editor - Qt4 GUI
@@ -153,7 +153,7 @@ find . -type f -exec chmod -x {} \;
 export CXXFLAGS="%{optflags} -fno-strict-aliasing"
 
 chmod 755 bootStrap.bash
-./bootStrap.bash --with-cli --with-gtk
+./bootStrap.bash --with-cli #--with-gtk
 
 %install
 cp -r install/* %{buildroot}
@@ -168,17 +168,17 @@ convert avidemux_icon.png -resize 16x16 %{buildroot}%{_miconsdir}/%{name}.png
 
 # menu
 mkdir -p %{buildroot}%{_datadir}/applications
-cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-gtk.desktop << EOF
-[Desktop Entry]
-Name=Avidemux
-Comment=A free video editor
-Exec=%{_bindir}/%{name}3_gtk %U
-Icon=%{name}
-Terminal=false
-Type=Application
-StartupNotify=true
-Categories=AudioVideo;Video;AudioVideoEditing;GTK;
-EOF
+#cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-gtk.desktop << EOF
+#[Desktop Entry]
+#Name=Avidemux
+#Comment=A free video editor
+#Exec=%{_bindir}/%{name}3_gtk %U
+#Icon=%{name}
+#Terminal=false
+#Type=Application
+#StartupNotify=true
+#Categories=AudioVideo;Video;AudioVideoEditing;GTK;
+#EOF
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-qt.desktop << EOF
 [Desktop Entry]
 Name=Avidemux
@@ -380,66 +380,66 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/pluginSettings/x264/3/iPhone.json
 %endif
 
-%files gtk
-%doc AUTHORS COPYING README
-%{_datadir}/applications/mandriva-avidemux-gtk.desktop
-%{_bindir}/avidemux3_gtk
-%{_libdir}/libADM_render6_gtk.so
-%{_libdir}/libADM_toolkitGtk.so
-%{_libdir}/libADM_UIGtk6.so
-%dir %{_libdir}/ADM_glade
-%dir %{_libdir}/ADM_glade/main
-%dir %{_libdir}/ADM_glade/videoFilter
-%{_libdir}/ADM_glade/about.gtkBuilder
-%{_libdir}/ADM_glade/avidemux_icon.png
-%{_libdir}/ADM_glade/calculator.gtkBuilder
-%{_libdir}/ADM_glade/DIA_alternate.gtkBuilder
-%{_libdir}/ADM_glade/encoding.gtkBuilder
-%{_libdir}/ADM_glade/main/avidemux_icon_small.png
-%{_libdir}/ADM_glade/main/first-frame.png
-%{_libdir}/ADM_glade/main/gtk2_build.gtkBuilder
-%{_libdir}/ADM_glade/main/last-frame.png
-%{_libdir}/ADM_glade/main/markA.png
-%{_libdir}/ADM_glade/main/markB.png
-%{_libdir}/ADM_glade/main/next-black-frame.png
-%{_libdir}/ADM_glade/main/next-frame.png
-%{_libdir}/ADM_glade/main/next-key-frame.png
-%{_libdir}/ADM_glade/main/play.png
-%{_libdir}/ADM_glade/main/previous-black-frame.png
-%{_libdir}/ADM_glade/main/previous-frame.png
-%{_libdir}/ADM_glade/main/previous-key-frame.png
-%{_libdir}/ADM_glade/main/stop.png
-%{_libdir}/ADM_glade/properties.gtkBuilder
-%{_libdir}/ADM_glade/videoFilter/1.png
-%{_libdir}/ADM_glade/videoFilter/2.png
-%{_libdir}/ADM_glade/videoFilter/3.png
-%{_libdir}/ADM_glade/videoFilter/4.png
-%{_libdir}/ADM_glade/videoFilter/5.png
-%{_libdir}/ADM_glade/videoFilter/6.png
-%{_libdir}/ADM_glade/videoFilter/7.png
-%{_libdir}/ADM_glade/videoFilter/add.png
-%{_libdir}/ADM_glade/videoFilter/cd.png
-%{_libdir}/ADM_glade/videoFilter/close.png
-%{_libdir}/ADM_glade/videoFilter/down.png
-%{_libdir}/ADM_glade/videoFilter/exec.png
-%{_libdir}/ADM_glade/videoFilter/fileopen.png
-%{_libdir}/ADM_glade/videoFilter/filesave.png
-%{_libdir}/ADM_glade/videoFilter/filesaveas.png
-%{_libdir}/ADM_glade/videoFilter/gl.png
-%{_libdir}/ADM_glade/videoFilter/remove.png
-%{_libdir}/ADM_glade/videoFilter/thumbnail.png
-%{_libdir}/ADM_glade/videoFilter/up.png
-%{_libdir}/ADM_glade/videoFilter/videoFilter.gtkBuilder
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_asharpGtk.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_chromaShiftGtk.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_contrastGtk.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_cropGtk.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_eq2Gtk.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_HueGtk.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_swscaleResize_gtk.so
-%if %with plf
-%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_gtk.so
-%endif
+#%files gtk
+#%doc AUTHORS COPYING README
+#%{_datadir}/applications/mandriva-avidemux-gtk.desktop
+#%{_bindir}/avidemux3_gtk
+#%{_libdir}/libADM_render6_gtk.so
+#%{_libdir}/libADM_toolkitGtk.so
+#%{_libdir}/libADM_UIGtk6.so
+#%dir %{_libdir}/ADM_glade
+#%dir %{_libdir}/ADM_glade/main
+#%dir %{_libdir}/ADM_glade/videoFilter
+#%{_libdir}/ADM_glade/about.gtkBuilder
+#%{_libdir}/ADM_glade/avidemux_icon.png
+#%{_libdir}/ADM_glade/calculator.gtkBuilder
+#%{_libdir}/ADM_glade/DIA_alternate.gtkBuilder
+#%{_libdir}/ADM_glade/encoding.gtkBuilder
+#%{_libdir}/ADM_glade/main/avidemux_icon_small.png
+#%{_libdir}/ADM_glade/main/first-frame.png
+#%{_libdir}/ADM_glade/main/gtk2_build.gtkBuilder
+#%{_libdir}/ADM_glade/main/last-frame.png
+#%{_libdir}/ADM_glade/main/markA.png
+#%{_libdir}/ADM_glade/main/markB.png
+#%{_libdir}/ADM_glade/main/next-black-frame.png
+#%{_libdir}/ADM_glade/main/next-frame.png
+#%{_libdir}/ADM_glade/main/next-key-frame.png
+#%{_libdir}/ADM_glade/main/play.png
+#%{_libdir}/ADM_glade/main/previous-black-frame.png
+#%{_libdir}/ADM_glade/main/previous-frame.png
+#%{_libdir}/ADM_glade/main/previous-key-frame.png
+#%{_libdir}/ADM_glade/main/stop.png
+#%{_libdir}/ADM_glade/properties.gtkBuilder
+#%{_libdir}/ADM_glade/videoFilter/1.png
+#%{_libdir}/ADM_glade/videoFilter/2.png
+#%{_libdir}/ADM_glade/videoFilter/3.png
+#%{_libdir}/ADM_glade/videoFilter/4.png
+#%{_libdir}/ADM_glade/videoFilter/5.png
+#%{_libdir}/ADM_glade/videoFilter/6.png
+#%{_libdir}/ADM_glade/videoFilter/7.png
+#%{_libdir}/ADM_glade/videoFilter/add.png
+#%{_libdir}/ADM_glade/videoFilter/cd.png
+#%{_libdir}/ADM_glade/videoFilter/close.png
+#%{_libdir}/ADM_glade/videoFilter/down.png
+#%{_libdir}/ADM_glade/videoFilter/exec.png
+#%{_libdir}/ADM_glade/videoFilter/fileopen.png
+#%{_libdir}/ADM_glade/videoFilter/filesave.png
+#%{_libdir}/ADM_glade/videoFilter/filesaveas.png
+#%{_libdir}/ADM_glade/videoFilter/gl.png
+#%{_libdir}/ADM_glade/videoFilter/remove.png
+#%{_libdir}/ADM_glade/videoFilter/thumbnail.png
+#%{_libdir}/ADM_glade/videoFilter/up.png
+#%{_libdir}/ADM_glade/videoFilter/videoFilter.gtkBuilder
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_asharpGtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_chromaShiftGtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_contrastGtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_cropGtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_eq2Gtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_HueGtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_swscaleResize_gtk.so
+#%if %with plf
+#%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_gtk.so
+#%endif
 
 
 %files qt
