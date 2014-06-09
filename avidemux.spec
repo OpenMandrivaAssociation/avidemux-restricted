@@ -1,7 +1,7 @@
 %define	name	avidemux
 %define	Name	Avidemux
 %define version 2.5.5
-%define rel 4
+%define rel 5
 %define pre 0
 %if %pre
 %define filename %{name}_%{version}_preview%{pre}
@@ -451,11 +451,11 @@ rm -rf %{buildroot}
     - plf: append "plf" to Release on cooker to make plf build have higher EVR
       again with the rpm5-style mkrel now in use
 
-* Mon Dec 06 2010 Götz Waschk <waschk@mandriva.org> 2.5.4-2mdv2011.0
+* Mon Dec 06 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.4-2mdv2011.0
 + Revision: 612215
 - fix build with new x264
 
-* Mon Dec 06 2010 Götz Waschk <waschk@mandriva.org> 2.5.4-1mdv2011.0
+* Mon Dec 06 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.4-1mdv2011.0
 + Revision: 612166
 - new version
 - add official patches
@@ -464,7 +464,7 @@ rm -rf %{buildroot}
 - fix build by disabling --no-undefined
 - add avsfilter and logo filter
 
-* Thu Sep 02 2010 Götz Waschk <waschk@mandriva.org> 2.5.3-2mdv2011.0
+* Thu Sep 02 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.3-2mdv2011.0
 + Revision: 575258
 - install missing libraries (bug #60877)
 
@@ -483,20 +483,20 @@ rm -rf %{buildroot}
     - i18n patch not needed
     - New version 2.5.3
 
-* Wed May 05 2010 Götz Waschk <waschk@mandriva.org> 2.5.2-4mdv2010.1
+* Wed May 05 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.2-4mdv2010.1
 + Revision: 542369
 - rebuild
 
-* Sat Jan 23 2010 Götz Waschk <waschk@mandriva.org> 2.5.2-3mdv2010.1
+* Sat Jan 23 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.2-3mdv2010.1
 + Revision: 495204
 - rebuild
 - reeable x264 for plf packports
 
-* Thu Jan 14 2010 Götz Waschk <waschk@mandriva.org> 2.5.2-2mdv2010.1
+* Thu Jan 14 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.2-2mdv2010.1
 + Revision: 491377
 - disable x264 build on 2010.0
 
-* Thu Jan 14 2010 Götz Waschk <waschk@mandriva.org> 2.5.2-1mdv2010.1
+* Thu Jan 14 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.2-1mdv2010.1
 + Revision: 491239
 - fix build on x86_64
 - new source URL
@@ -505,21 +505,21 @@ rm -rf %{buildroot}
   + Funda Wang <fwang@mandriva.org>
     - new version 2.5.2
 
-* Thu Dec 10 2009 Götz Waschk <waschk@mandriva.org> 2.5.1-4mdv2010.1
+* Thu Dec 10 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.1-4mdv2010.1
 + Revision: 475968
 - rebuild
 
-* Mon Nov 09 2009 Götz Waschk <waschk@mandriva.org> 2.5.1-3mdv2010.1
+* Mon Nov 09 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.1-3mdv2010.1
 + Revision: 463778
 - patch for new x264
 
-* Tue Aug 18 2009 Götz Waschk <waschk@mandriva.org> 2.5.1-2mdv2010.0
+* Tue Aug 18 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.1-2mdv2010.0
 + Revision: 417570
 - fix opencore detection
 - remove dca plugin
 - update amr build deps
 
-* Tue Aug 18 2009 Götz Waschk <waschk@mandriva.org> 2.5.1-1mdv2010.0
+* Tue Aug 18 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.1-1mdv2010.0
 + Revision: 417550
 - new version
 - drop patches 4,5,6,7,8
@@ -540,12 +540,12 @@ rm -rf %{buildroot}
 - make requires in UIs more strict
 - drop mmx build switch, avidemux has fallbacks for non-MMX systems
 
-* Fri Jul 10 2009 Götz Waschk <waschk@mandriva.org> 2.5.0-2mdv2010.0
+* Fri Jul 10 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.0-2mdv2010.0
 + Revision: 394217
 - update the patches
 - support building the plugins (currently not in the mdv build)
 
-* Fri Jul 10 2009 Götz Waschk <waschk@mandriva.org> 2.5.0-1mdv2010.0
+* Fri Jul 10 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.0-1mdv2010.0
 + Revision: 394078
 - fix installation on x86_64
 - new version
@@ -555,11 +555,11 @@ rm -rf %{buildroot}
 - update file list
 - fix build with new cmake
 
-* Wed Feb 11 2009 Götz Waschk <waschk@mandriva.org> 2.4.4-2mdv2009.1
+* Wed Feb 11 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.4-2mdv2009.1
 + Revision: 339350
 - rebuild for new libfaad
 
-* Tue Feb 10 2009 Götz Waschk <waschk@mandriva.org> 2.4.4-1mdv2009.1
+* Tue Feb 10 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.4-1mdv2009.1
 + Revision: 339136
 - new version
 - drop patch 3
@@ -570,7 +570,7 @@ rm -rf %{buildroot}
   + Oden Eriksson <oeriksson@mandriva.com>
     - lowercase ImageMagick
 
-* Mon Oct 13 2008 Götz Waschk <waschk@mandriva.org> 2.4.3-2mdv2009.1
+* Mon Oct 13 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.3-2mdv2009.1
 + Revision: 293213
 - fix for new x264
 - revert previous change
@@ -580,18 +580,18 @@ rm -rf %{buildroot}
 + Revision: 249175
 - BR libxslt-proc
 
-  + Götz Waschk <waschk@mandriva.org>
+  + GÃ¶tz Waschk <waschk@mandriva.org>
     - fix buildrequires
     - new version
     - update build deps
     - switch to cmake
     - update file list
 
-* Thu Jul 24 2008 Götz Waschk <waschk@mandriva.org> 2.4.2-2mdv2009.0
+* Thu Jul 24 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.2-2mdv2009.0
 + Revision: 245445
 - update patch 2 (libdca)
 
-* Thu Jul 24 2008 Götz Waschk <waschk@mandriva.org> 2.4.2-1mdv2009.0
+* Thu Jul 24 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.2-1mdv2009.0
 + Revision: 245406
 - new version
 - drop patches 3,4
@@ -607,22 +607,22 @@ rm -rf %{buildroot}
 - add gentoo patches
 - rebuild for new directfb
 
-* Sun Feb 17 2008 Götz Waschk <waschk@mandriva.org> 2.4.1-2mdv2008.1
+* Sun Feb 17 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.1-2mdv2008.1
 + Revision: 170042
 - add qt gui and split the package
 
-* Sun Feb 17 2008 Götz Waschk <waschk@mandriva.org> 2.4.1-1mdv2008.1
+* Sun Feb 17 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.1-1mdv2008.1
 + Revision: 169979
 - new version
 
-* Thu Jan 17 2008 Götz Waschk <waschk@mandriva.org> 2.4-2mdv2008.1
+* Thu Jan 17 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4-2mdv2008.1
 + Revision: 154479
 - rebuild
 
   + Thierry Vignaud <tv@mandriva.org>
     - drop old menu
 
-* Wed Jan 02 2008 Götz Waschk <waschk@mandriva.org> 2.4-1mdv2008.1
+* Wed Jan 02 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4-1mdv2008.1
 + Revision: 140518
 - new version
 
@@ -632,11 +632,11 @@ rm -rf %{buildroot}
   + Thierry Vignaud <tv@mandriva.org>
     - kill re-definition of %%buildroot on Pixel's request
 
-* Wed Nov 14 2007 Götz Waschk <waschk@mandriva.org> 2.4-0.preview3.1mdv2008.1
+* Wed Nov 14 2007 GÃ¶tz Waschk <waschk@mandriva.org> 2.4-0.preview3.1mdv2008.1
 + Revision: 108693
 - new version
 
-* Sat Oct 13 2007 Götz Waschk <waschk@mandriva.org> 2.4-0.preview2.1mdv2008.1
+* Sat Oct 13 2007 GÃ¶tz Waschk <waschk@mandriva.org> 2.4-0.preview2.1mdv2008.1
 + Revision: 98088
 - new version
 - drop patch
@@ -662,7 +662,7 @@ rm -rf %{buildroot}
 - update patch0
 
 
-* Fri Mar 23 2007 Götz Waschk <waschk@mandriva.org> 2.3.0-7mdv2007.1
+* Fri Mar 23 2007 GÃ¶tz Waschk <waschk@mandriva.org> 2.3.0-7mdv2007.1
 + Revision: 148360
 - rebuild for new firefox
 
@@ -675,134 +675,134 @@ rm -rf %{buildroot}
 - adapt package for Mandriva
 - Import avidemux
 
-* Tue Feb 27 2007 G�tz Waschk <goetz@zarb.org> 2.3.0-5plf2007.1
+* Tue Feb 27 2007 Götz Waschk <goetz@zarb.org> 2.3.0-5plf2007.1
 - rebuild for new firefox
 
-* Thu Feb 22 2007 G�tz Waschk <goetz@zarb.org> 2.3.0-4plf2007.1
+* Thu Feb 22 2007 Götz Waschk <goetz@zarb.org> 2.3.0-4plf2007.1
 - rebuild for new libgiil
 
-* Mon Jan 08 2007 G�tz Waschk <goetz@zarb.org> 2.3.0-3plf2007.1
+* Mon Jan 08 2007 Götz Waschk <goetz@zarb.org> 2.3.0-3plf2007.1
 - rebuild for new firefox
 
-* Thu Dec 07 2006 G�tz Waschk <goetz@zarb.org> 2.3.0-2plf2007.1
+* Thu Dec 07 2006 Götz Waschk <goetz@zarb.org> 2.3.0-2plf2007.1
 - fix firefox build
 
-* Sun Dec 03 2006 G�tz Waschk <goetz@zarb.org> 2.3.0-1plf2007.1
+* Sun Dec 03 2006 Götz Waschk <goetz@zarb.org> 2.3.0-1plf2007.1
 - new version
 
 * Fri Nov 17 2006 Anssi Hannula <anssi@zarb.org> 2.3-0.preview2.5plf2007.1
 - fix firefox requires on lib64 and when backporting
 
-* Thu Nov 09 2006 G�tz Waschk <goetz@zarb.org> 2.3-0.preview2.4plf2007.1
+* Thu Nov 09 2006 Götz Waschk <goetz@zarb.org> 2.3-0.preview2.4plf2007.1
 - fix mozilla dep
 
-* Thu Nov 09 2006 G�tz Waschk <goetz@zarb.org> 2.3-0.preview2.3plf2007.1
+* Thu Nov 09 2006 Götz Waschk <goetz@zarb.org> 2.3-0.preview2.3plf2007.1
 - rebuild for new firefox
 
 * Sun Oct 29 2006 Anssi Hannula <anssi@zarb.org> 2.3-0.preview2.2plf2007.1
 - disable parallel build
 
-* Fri Oct 20 2006 G�tz Waschk <goetz@zarb.org> 2.3-0.preview2.1plf2007.1
+* Fri Oct 20 2006 Götz Waschk <goetz@zarb.org> 2.3-0.preview2.1plf2007.1
 - drop the patch
 - new version
 
-* Thu Oct 19 2006 G�tz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.10plf2007.1
+* Thu Oct 19 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.10plf2007.1
 - rebuild
 
-* Tue Sep 19 2006 G�tz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.9plf2007.0
+* Tue Sep 19 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.9plf2007.0
 - rebuild
 
-* Mon Sep 18 2006 G�tz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.8plf2007.0
+* Mon Sep 18 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.8plf2007.0
 - rebuild for new firefox
 
 * Sat Sep 09 2006 Anssi Hannula <anssi@zarb.org> 2.2.0-0.preview2b.7plf2007.0
 - fix LDFLAGS for lib64 on backports
 
-* Sat Sep 09 2006 G�tz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.6plf2007.0
+* Sat Sep 09 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.6plf2007.0
 - don't apply the patch on 2006.0
 
-* Wed Aug 30 2006 G�tz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.5plf2007.0
+* Wed Aug 30 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.5plf2007.0
 - patch for new x264
 
-* Fri Aug 04 2006 G�tz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.4plf2007.0
+* Fri Aug 04 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.4plf2007.0
 - rebuild for new firefox
 
-* Tue Aug 01 2006 G�tz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.3plf2007.0
+* Tue Aug 01 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.3plf2007.0
 - Rebuild for new firefox
 
-* Sun Jul 02 2006 G�tz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.2plf2007.0
+* Sun Jul 02 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.2plf2007.0
 - rebuild
 
-* Fri Jun 23 2006 G�tz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.1plf2007.0
+* Fri Jun 23 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.1plf2007.0
 - add xdg menu
 - new version
 
-* Sun Jun 04 2006 G�tz Waschk <goetz@zarb.org> 2.1.2-5plf2007.0
+* Sun Jun 04 2006 Götz Waschk <goetz@zarb.org> 2.1.2-5plf2007.0
 - Rebuild for new firefox
 
-* Thu May 04 2006 Götz Waschk <goetz@zarb.org> 2.1.2-4plf
+* Thu May 04 2006 GÃ¶tz Waschk <goetz@zarb.org> 2.1.2-4plf
 - rebuild for new firefox
 
-* Sat Apr 22 2006 G�tz Waschk <goetz@zarb.org> 2.1.2-3plf
+* Sat Apr 22 2006 Götz Waschk <goetz@zarb.org> 2.1.2-3plf
 - rebuild for new firefox
 
-* Thu Apr 06 2006 G�tz Waschk <goetz@zarb.org> 2.1.2-2plf
+* Thu Apr 06 2006 Götz Waschk <goetz@zarb.org> 2.1.2-2plf
 - rebuild to fix firefox dep
 
-* Wed Mar 08 2006 G�tz Waschk <goetz@zarb.org> 2.1.2-1plf
+* Wed Mar 08 2006 Götz Waschk <goetz@zarb.org> 2.1.2-1plf
 - drop patch
 
-* Wed Mar 08 2006 Götz Waschk <goetz@zarb.org> 2.1.2-1plf
+* Wed Mar 08 2006 GÃ¶tz Waschk <goetz@zarb.org> 2.1.2-1plf
 - New release 2.1.2
 
-* Fri Feb 03 2006 Götz Waschk <goetz@zarb.org> 2.1.0-3plf
+* Fri Feb 03 2006 GÃ¶tz Waschk <goetz@zarb.org> 2.1.0-3plf
 - rebuild for new mozilla-firefox
 
-* Tue Jan 10 2006 Götz Waschk <goetz@zarb.org> 2.1.0-2plf
+* Tue Jan 10 2006 GÃ¶tz Waschk <goetz@zarb.org> 2.1.0-2plf
 - rebuild  for new mozilla-firefox
 
-* Tue Dec 27 2005 G�tz Waschk <goetz@zarb.org> 2.1.0-1plf
+* Tue Dec 27 2005 Götz Waschk <goetz@zarb.org> 2.1.0-1plf
 - new version
 
-* Thu Oct 27 2005 G�tz Waschk <goetz@zarb.org> 2.1.0-0.step3.2plf
+* Thu Oct 27 2005 Götz Waschk <goetz@zarb.org> 2.1.0-0.step3.2plf
 - rebuild for new firefox
 
-* Thu Oct 20 2005 G�tz Waschk <goetz@zarb.org> 2.1.0-0.step3.1plf
+* Thu Oct 20 2005 Götz Waschk <goetz@zarb.org> 2.1.0-0.step3.1plf
 - new version
 
 * Tue Sep 27 2005 Goetz Waschk <goetz@ryu.zarb.org> 2.1.0-0.step2.2plf
 - add rpath to fix mozilla linking
 
-* Tue Sep 13 2005 G�tz Waschk <goetz@zarb.org> 2.1.0-0.step2.1plf
+* Tue Sep 13 2005 Götz Waschk <goetz@zarb.org> 2.1.0-0.step2.1plf
 - enable x264
 - rediff the patch
 - new version
 
-* Wed Aug 17 2005 G�tz Waschk <goetz@zarb.org> 2.1-0.step1.1plf
+* Wed Aug 17 2005 Götz Waschk <goetz@zarb.org> 2.1-0.step1.1plf
 - bump deps
 - drop source 4
 - new version
 
-* Thu Jun 16 2005 G�tz Waschk <goetz@zarb.org> 2.0.40-1plf
+* Thu Jun 16 2005 Götz Waschk <goetz@zarb.org> 2.0.40-1plf
 - ugly workaround for Cooker's broken gcc4
 - new version
 
-* Wed May 04 2005 G�tz Waschk <goetz@zarb.org> 2.0.38-0.rc3.1plf
+* Wed May 04 2005 Götz Waschk <goetz@zarb.org> 2.0.38-0.rc3.1plf
 - new version
 
-* Wed Apr 20 2005 G�tz Waschk <goetz@zarb.org> 2.0.38-0.rc2b.2plf
+* Wed Apr 20 2005 Götz Waschk <goetz@zarb.org> 2.0.38-0.rc2b.2plf
 - mkrel macro
 
-* Sat Apr 02 2005 G�tz Waschk <goetz@zarb.org> 2.0.38-0.rc2b.1plf
+* Sat Apr 02 2005 Götz Waschk <goetz@zarb.org> 2.0.38-0.rc2b.1plf
 - decompress icons
 - update buildrequires
 - enable mmx (doesn't build otherwise)
 - new version
 
-* Fri Apr 01 2005 G�tz Waschk <goetz@zarb.org> 2.0.38-0.rc1.1plf
+* Fri Apr 01 2005 Götz Waschk <goetz@zarb.org> 2.0.38-0.rc1.1plf
 - New release 2.0.38rc1
 
-* Thu Feb 17 2005 G�tz Waschk <goetz@zarb.org> 2.0.36-1plf
+* Thu Feb 17 2005 Götz Waschk <goetz@zarb.org> 2.0.36-1plf
 - new version
 
 * Mon Dec 06 2004 Laurent Culioli <laurent@zarb.org> 2.0.34-0.test1.1plf
@@ -813,20 +813,20 @@ rm -rf %{buildroot}
 - 2.0.32
 - Patch0: mpeg ps fix.
 
-* Sat Aug 14 2004 G�tz Waschk <goetz@zarb.org> 2.0.28-1plf
+* Sat Aug 14 2004 Götz Waschk <goetz@zarb.org> 2.0.28-1plf
 - source URL
 - New release 2.0.28
 
-* Sat Jul 24 2004 G�tz Waschk <goetz@plf.zarb.org> 2.0.26-1plf
+* Sat Jul 24 2004 Götz Waschk <goetz@plf.zarb.org> 2.0.26-1plf
 - update buildrequires
 - reenable libtoolize on cooker
 - New release 2.0.26
 
-* Mon May 10 2004 G�tz Waschk <goetz@plf.zarb.org> 2.0.24-1plf
+* Mon May 10 2004 Götz Waschk <goetz@plf.zarb.org> 2.0.24-1plf
 - add source url
 - New release 2.0.24
 
-* Thu Apr 15 2004 G�tz Waschk <goetz@plf.zarb.org> 2.0.22-1plf
+* Thu Apr 15 2004 Götz Waschk <goetz@plf.zarb.org> 2.0.22-1plf
 - don't run libtoolize
 - update description
 - drop merged patch
