@@ -1,0 +1,15 @@
+--- cmake/admCheckRequiredLibs.cmake.orig	2012-11-24 14:10:22.875484974 +0100
++++ cmake/admCheckRequiredLibs.cmake	2012-11-24 14:10:22.887484974 +0100
+@@ -16,9 +16,9 @@
+        endif (DEFINED PKGCONFIG_FOUND)
+ endif (${CMAKE_VERSION} VERSION_EQUAL 2.8.8)
+ 
+-IF (NOT PKG_CONFIG_FOUND)
+-	MESSAGE(FATAL_ERROR "Could not find pkg-config")
+-ENDIF (NOT PKG_CONFIG_FOUND)
++#IF (NOT PKG_CONFIG_FOUND)
++#	MESSAGE(FATAL_ERROR "Could not find pkg-config")
++#ENDIF (NOT PKG_CONFIG_FOUND)
+ 
+ MESSAGE(STATUS "Found pkg-config")
+ 

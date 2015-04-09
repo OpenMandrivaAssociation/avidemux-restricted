@@ -1,0 +1,8 @@
+# avidemux become avidemux3 gemerates so.6
+addFilter("E: invalid-soname")
+# same libfaad2-devel crap
+addFilter("E: invalid-build-requires")
+# avidemux become avidemux3 
+addFilter("E: incoherent-version-in-name")
+# the ui packages contains libs too
+addFilter("E: executable-in-library-package")

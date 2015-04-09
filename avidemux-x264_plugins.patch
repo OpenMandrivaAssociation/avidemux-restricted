@@ -1,0 +1,38 @@
+--- avidemux_plugins/ADM_videoEncoder/x264/CMakeLists.txt.orig	2013-05-11 19:57:12.944707623 +0200
++++ avidemux_plugins/ADM_videoEncoder/x264/CMakeLists.txt	2013-05-11 19:57:12.973707063 +0200
+@@ -27,15 +27,26 @@
+     INSTALL_VIDEO_ENCODER(ADM_ve_x264_qt4)
+   endif(DO_QT4)
+   #-----------------------/QT4 VERSION---------------------
+-  #-----------------------GTK or CLI VERSION---------------------
+-  if((DO_GTK) OR (DO_CLI))
+-    ADD_VIDEO_ENCODER(ADM_ve_x264_other   ADM_x264_noui.cpp ${x264_SRCS})
+-    ADD_TARGET_CFLAGS(ADM_ve_x264_other "-DADM_UI_TYPE_BUILD=1") # CLI!
+-    TARGET_LINK_LIBRARIES(ADM_ve_x264_other "${X264_LIBRARY_DIR}")
+-    TARGET_LINK_LIBRARIES(ADM_ve_x264_other ADM_core6)
+-    INIT_VIDEO_ENCODER(ADM_ve_x264_other)
+-    INSTALL_VIDEO_ENCODER(ADM_ve_x264_other)
+-  endif((DO_GTK) OR (DO_CLI))
++  #-----------------------CLI VERSION----------------------
++  if(DO_CLI)
++    ADD_VIDEO_ENCODER(ADM_ve_x264_cli   ADM_x264_noui.cpp ${x264_SRCS})
++    ADD_TARGET_CFLAGS(ADM_ve_x264_cli "-DADM_UI_TYPE_BUILD=1") # CLI!
++    TARGET_LINK_LIBRARIES(ADM_ve_x264_cli "${X264_LIBRARY_DIR}")
++    TARGET_LINK_LIBRARIES(ADM_ve_x264_cli ADM_core6)
++    INIT_VIDEO_ENCODER(ADM_ve_x264_cli)
++    INSTALL_VIDEO_ENCODER(ADM_ve_x264_cli)
++  endif(DO_CLI)
++  #-----------------------/CLI VERSION---------------------
++  #-----------------------GTK VERSION----------------------
++  if(DO_GTK)
++    ADD_VIDEO_ENCODER(ADM_ve_x264_gtk   ADM_x264_noui.cpp ${x264_SRCS})
++    ADD_TARGET_CFLAGS(ADM_ve_x264_gtk "-DADM_UI_TYPE_BUILD=1") # GTK!
++    TARGET_LINK_LIBRARIES(ADM_ve_x264_gtk "${X264_LIBRARY_DIR}")
++    TARGET_LINK_LIBRARIES(ADM_ve_x264_gtk ADM_core6)
++    INIT_VIDEO_ENCODER(ADM_ve_x264_gtk)
++    INSTALL_VIDEO_ENCODER(ADM_ve_x264_gtk)
++  endif(DO_GTK)
++  #-----------------------/GTK VERSION---------------------
+   # ------------- PRESET -----------
+   if(DO_SETTINGS)
+     FILE(GLOB json_files ${CMAKE_CURRENT_SOURCE_DIR}/preset/*.json)

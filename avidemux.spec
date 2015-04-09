@@ -1,83 +1,84 @@
-%define	name	avidemux
-%define	Name	Avidemux
-%define version 2.5.5
-%define rel 5
-%define pre 0
-%if %pre
-%define filename %{name}_%{version}_preview%{pre}
-%define release %mkrel 0.preview%{pre}.%{rel}
-%else 
 %define filename %{name}_%{version}
-%define release %mkrel %{rel}
-%endif
+######################
+# to build ths need to add non-free, contrib,main, and restricted at the build time.
+#############################
+# Hardcore PLF build
+# bcond_with or bcond_without
+%bcond_without plf
+#############################
+%define         ffmpeg_version 1.2.6
 
-%bcond_with plf
-%define with_x264 0
-
-########################
-# Hardcode PLF build
-%define build_plf 1
-########################
-
-%if %{build_plf}
+%if %with plf
 %define distsuffix plf
-%if %mdvver >= 201100
 # make EVR of plf build higher than regular to allow update, needed with rpm5 mkrel
 %define extrarelsuffix plf
 %endif
-%define with_x264 1
-%endif
 
-%define	pkgsummary	A free video editor
-
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}%{?extrarelsuffix}
-Summary:	%{pkgsummary}
-Source0:	http://downloads.sourceforge.net/project/%name/%name/%version/%{filename}.tar.gz
-Patch2:		avidemux-2.5.1-opencore-check.patch
-Patch3:		avidemux-jack-underlinking.patch
-Patch5:		avidemux-mpeg2enc-underlinking.patch
-#fix build with x264 0.115
-Patch6:		avidemux-2.5.5-x264.patch
-#disable arts
-Patch7:		avidemux-2.5.5-arts.patch
+Name:		avidemux
+Version:	2.6.8
+Release:	1%{?extrarelsuffix}
+Summary:	A free video editor
 License:	GPLv2+
 Group:		Video
 Url:		http://fixounet.free.fr/avidemux
-BuildRoot:	%{_tmppath}/%{name}-buildroot
-BuildRequires:	gtk+2-devel >= 2.6.0
-BuildRequires:	qt4-devel qt4-linguist
-BuildRequires:	SDL-devel
-BuildRequires:	nasm
-BuildRequires:	libxml2-devel
-BuildRequires:	libmad-devel
-BuildRequires:	liba52dec-devel
-BuildRequires:	libvorbis-devel
-BuildRequires:	esound-devel
-BuildRequires:	libjack-devel
-BuildRequires:	libpulseaudio-devel
-BuildRequires:	libsamplerate-devel
-BuildRequires:	gettext-devel
-BuildRequires:	libxv-devel
-BuildRequires:	libva-devel
+Source0:	http://downloads.sourceforge.net/project/%{name}/%{name}/%{version}/%{filename}.tar.gz
+Source3:        ffmpeg-%{ffmpeg_version}.tar.bz2
+Source4:        xvba_support_from_xbmc_xvba.patch
+Source100:	%{name}.rpmlintrc
+
+Patch0:         avidemux-cmake-2.8.8.patch
+Patch1:         avidemux-linking.patch
+Patch2:         avidemux-x264_plugins.patch
+Patch3:         avidemux-package_version.patch
+
 BuildRequires:	cmake
-BuildRequires:	libxslt-proc
-# not packaged yet:
-#BuildRequires:  libaften-devel
-%if %{build_plf}
-BuildRequires:	libxvid-devel
-BuildRequires:	liblame-devel
-BuildRequires:	libfaad2-devel
-BuildRequires:	libfaac-devel
-%if %with_x264
-BuildRequires:	x264-devel >= 0.67
-%endif
-BuildRequires:  opencore-amr-devel
-%endif
 BuildRequires:	imagemagick
-BuildRequires:	yasm
-Requires: avidemux-ui
+BuildRequires:	xsltproc
+BuildRequires:	nasm
+BuildRequires:	qt4-linguist
+BuildRequires:	yasm yasm-devel
+BuildRequires:	gettext-devel
+BuildRequires:  intltool
+BuildRequires:  dos2unix
+BuildRequires:  pkgconfig(sqlite)
+BuildRequires:  pkgconfig(fontconfig)
+BuildRequires:  pkgconfig(freetype2)
+BuildRequires:  pkgconfig(mozjs185)
+BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	pkgconfig(samplerate)
+BuildRequires:	qt4-devel
+BuildRequires:	pkgconfig(gdk-3.0)
+BuildRequires:	pkgconfig(esound)
+BuildRequires:	pkgconfig(jack)
+BuildRequires:	pkgconfig(libpulse)
+BuildRequires:	pkgconfig(alsa)
+BuildRequires:	pkgconfig(libass)
+BuildRequires:	pkgconfig(libva)
+BuildRequires:	pkgconfig(mad)
+BuildRequires:	pkgconfig(sdl)
+BuildRequires:	pkgconfig(vorbis)
+BuildRequires:	pkgconfig(xv)
+BuildRequires:  pkgconfig(xmu)
+BuildRequires:  pkgconfig(gl)
+BuildRequires:  pkgconfig(glu)
+BuildRequires:  pkgconfig(vdpau)
+BuildRequires:  a52dec-devel
+BuildRequires:  pkgconfig(libdca)
+BuildRequires:  pkgconfig(vpx)
+BuildRequires:  pkgconfig(twolame)
+BuildRequires:  aften-devel
+BuildRequires:  pkgconfig(dcaenc)
+BuildRequires:  pkgconfig(cairo)
+%if %with plf
+BuildRequires:	libfaac-devel
+BuildRequires:	libfaad2-devel
+BuildRequires:	liblame-devel
+BuildRequires:	xvid-devel
+BuildRequires:	pkgconfig(opencore-amrnb)
+BuildRequires:	pkgconfig(opencore-amrwb)
+BuildRequires:	pkgconfig(x264)
+%endif
+Requires:	avidemux-ui = %{version}-%{release}
 
 %description
 Avidemux is a free video editor designed for simple cutting,
@@ -86,92 +87,76 @@ AVI, DVD compatible MPEG files, MP4 and ASF, using a variety of
 codecs. Tasks can be automated using projects, job queue and
 powerful scripting capabilities.
 
-%if %{build_plf}
+%if %with plf
 This package is in restricted because this build has support for codecs
 covered by software patents.
 %endif
+#
+#%package gtk
+#Summary:	A free video editor - GTK GUI
+#Group:		Video
+#Requires:	gtk+3.0 >= 3.8.6
+#Requires:	%{name} = %{version}-%{release}
+#Provides:	avidemux-ui = %{version}-%{release}
 
-%package gtk
-Summary:	%{pkgsummary} - GTK GUI
-Group:		Video
-Requires: gtk+2.0 >= 2.6.0
-Requires: %{name} = %{version}-%{release}
-Provides: avidemux-ui = %{version}-%{release}
-
-%description gtk
-Avidemux is a free video editor. This package contains the
-version with a graphical user interface based on GTK.
+#%description gtk
+#Avidemux is a free video editor. This package contains the
+#version with a graphical user interface based on GTK.
 
 %package qt
-Summary:	%{pkgsummary} - Qt4 GUI
+Summary:	A free video editor - Qt4 GUI
 Group:		Video
-Requires: %{name} = %{version}-%{release}
-Provides: avidemux-ui = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
+Provides:	avidemux-ui = %{version}-%{release}
 
 %description qt
 Avidemux is a free video editor. This package contains the
 version with a graphical user interface based on Qt4.
 
 %package cli
-Summary:	%{pkgsummary} - command-line version
+Summary:	A free video editor - command-line version
 Group:		Video
-Requires: %{name} = %{version}-%{release}
-Provides: avidemux-ui = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
+Provides:	avidemux-ui = %{version}-%{release}
 
 %description cli
 Avidemux is a free video editor. This package contains the
 version with a command-line interface.
 
-%if %{build_plf}
+%if %with plf
 This package is in restricted because this build has support for codecs
 covered by software patents.
 %endif
 
 %prep
-%setup -q -n %{filename}
-%patch2 -p1
-%patch3 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
+%setup -qn %{filename}
+# convert docs
+find . -type f -exec dos2unix -q {} \;
+# replace old ffmpeg and build it for the core.
+sed -i -e 's|set(FFMPEG_VERSION "1.2.1")|set(FFMPEG_VERSION "%{ffmpeg_version}")|g' cmake/admFFmpegBuild.cmake
+rm -f avidemux_core/ffmpeg_package/ffmpeg-1.2.1.tar.bz2
+cp %{S:3} avidemux_core/ffmpeg_package/
+pushd avidemux_core/ffmpeg_package/patches/xvba
+rm -f xvba_support_from_xbmc_xvba.patch
+cp %{S:4} .
+popd
+# fix some linting
+find . -type f -exec chmod -x {} \;
 
-
-# libdir is nicely hardcoded
-sed -i 's,Dir="lib",Dir="%{_lib}",' avidemux/main.cpp avidemux/ADM_core/src/ADM_fileio.cpp
-grep -q '"%{_lib}"' avidemux/main.cpp
-grep -q '"%{_lib}"' avidemux/ADM_core/src/ADM_fileio.cpp
+#  paches
+%patch0 -p0
+%patch1 -p0
+%patch2 -p0
+%patch3 -p0
 
 %build
-#gw 2.5.4 has linking problems in plugins/ADM_videoFilters/AvsFilter
-#   	      	      	   and in plugins/ADM_videoFilters/Logo/
-%define _disable_ld_no_undefined 1
-%cmake
-%make
+export CXXFLAGS="%{optflags} -fno-strict-aliasing"
 
-# plugin build expects libraries to be already installed; we fake a prefix
-# in build/ by symlinking all libraries to build/lib/
-mkdir -p %_lib
-cd %_lib
-find ../avidemux -name '*.so*' | xargs ln -sft . 
-cd ../../plugins
-%cmake -DAVIDEMUX_SOURCE_DIR=%{_builddir}/%{filename} -DAVIDEMUX_CORECONFIG_DIR=%{_builddir}/%{filename}/build/config -DAVIDEMUX_INSTALL_PREFIX=%{_builddir}/%{filename}/build
-make
-
+chmod 755 bootStrap.bash
+./bootStrap.bash --with-cli #--with-gtk
 
 %install
-rm -rf %{buildroot}
-cd build
-%makeinstall_std
-mkdir -p %{buildroot}%{_libdir}
-cd ..
-
-cd plugins/build
-%makeinstall_std
-#gw install this manually:
-cp ADM_videoEncoder/ADM_vidEnc_mpeg2enc/mpeg2enc/libmpeg2enc.so \
-  ADM_videoEncoder/common/pluginOptions/libADM_vidEnc_pluginOptions.so \
-  ADM_videoEncoder/common/xvidRateCtl/libADM_xvidRateCtl.so %{buildroot}%{_libdir}
-cd ../..
+cp -r install/* %{buildroot}
 
 # icons
 install -d -m755 %{buildroot}%{_liconsdir}
@@ -183,22 +168,22 @@ convert avidemux_icon.png -resize 16x16 %{buildroot}%{_miconsdir}/%{name}.png
 
 # menu
 mkdir -p %{buildroot}%{_datadir}/applications
-cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-gtk.desktop << EOF
-[Desktop Entry]
-Name=%{Name}
-Comment=%{pkgsummary}
-Exec=%{_bindir}/%{name}2_gtk %U
-Icon=%{name}
-Terminal=false
-Type=Application
-StartupNotify=true
-Categories=AudioVideo;Video;AudioVideoEditing;GTK;
-EOF
+#cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-gtk.desktop << EOF
+#[Desktop Entry]
+#Name=Avidemux
+#Comment=A free video editor
+#Exec=%{_bindir}/%{name}3_gtk %U
+#Icon=%{name}
+#Terminal=false
+#Type=Application
+#StartupNotify=true
+#Categories=AudioVideo;Video;AudioVideoEditing;GTK;
+#EOF
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-qt.desktop << EOF
 [Desktop Entry]
-Name=%{Name}
-Comment=%{pkgsummary}
-Exec=%{_bindir}/%{name}2_qt4 %U
+Name=Avidemux
+Comment=A free video editor
+Exec=%{_bindir}/%{name}3_qt4 %U
 Icon=%{name}
 Terminal=false
 Type=Application
@@ -206,630 +191,293 @@ StartupNotify=true
 Categories=AudioVideo;Video;AudioVideoEditing;Qt;
 EOF
 
+# Install man
+install -D -m644 man/avidemux.1 %{buildroot}%{_mandir}/man1/avidemux.1
+
+# delete devel file (only needed for build)
+rm -rf %{buildroot}%{_includedir}
 rm -rf %{buildroot}%{_datadir}/locale/klingon
 
-%{find_lang} %{name}
+#find_lang %{name}
 
-%if %mdkversion <= 200710
-# compatibility symlink
-ln -s avidemux2_gtk %{buildroot}%{_bindir}/avidemux2
-%endif
-
-%if %mdkversion < 200900
-%post gtk
-%{update_menus}
-%endif
-
-%if %mdkversion < 200900
-%postun gtk
-%{clean_menus}
-%endif
-
-%if %mdkversion < 200900
-%post qt
-%{update_menus}
-%endif
-
-%if %mdkversion < 200900
-%postun qt
-%{clean_menus}
-%endif
-
-%clean 
-rm -rf %{buildroot}
-
-%files -f %{name}.lang
-%defattr(-,root,root)
-%doc AUTHORS
-%if %mdkversion <= 200710
-%{_bindir}/avidemux2
-%endif
+#files -f %{name}.lang
+%files
+%doc AUTHORS COPYING README
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
-%{_libdir}/libADM5*
-%{_libdir}/libADM_core*
-%{_libdir}/libADM_smjs.so
-%{_libdir}/libADM_vidEnc_pluginOptions.so
-%{_libdir}/libADM_xvidRateCtl.so
-%{_libdir}/libmpeg2enc.so
-%dir %{_libdir}/ADM_plugins
-%dir %{_libdir}/ADM_plugins/audioDecoder
-%{_libdir}/ADM_plugins/audioDecoder/libADM_ad_Mad.so
-%{_libdir}/ADM_plugins/audioDecoder/libADM_ad_a52.so
-%if %{build_plf}
-%{_libdir}/ADM_plugins/audioDecoder/libADM_ad_opencore_amrnb.so
-%{_libdir}/ADM_plugins/audioDecoder/libADM_ad_opencore_amrwb.so
-%{_libdir}/ADM_plugins/audioDecoder/libADM_ad_faad.so
-%endif
-%{_libdir}/ADM_plugins/audioDecoder/libADM_ad_vorbis.so
-%dir %{_libdir}/ADM_plugins/audioDevices
-%{_libdir}/ADM_plugins/audioDevices/libADM_av_alsa.so
-#%_libdir/ADM_plugins/audioDevices/libADM_av_arts.so
-%{_libdir}/ADM_plugins/audioDevices/libADM_av_esd.so
-%{_libdir}/ADM_plugins/audioDevices/libADM_av_jack.so
-%{_libdir}/ADM_plugins/audioDevices/libADM_av_oss.so
-%{_libdir}/ADM_plugins/audioDevices/libADM_av_pulseAudioSimple.so
-%{_libdir}/ADM_plugins/audioDevices/libADM_av_sdl.so
-%dir %{_libdir}/ADM_plugins/audioEncoders
-%{_libdir}/ADM_plugins/audioEncoders/libADM_ae_lav_ac3.so
-%{_libdir}/ADM_plugins/audioEncoders/libADM_ae_lav_mp2.so
-%{_libdir}/ADM_plugins/audioEncoders/libADM_ae_pcm.so
-%{_libdir}/ADM_plugins/audioEncoders/libADM_ae_twolame.so
-%{_libdir}/ADM_plugins/audioEncoders/libADM_ae_vorbis.so
-%if %{build_plf}
-%{_libdir}/ADM_plugins/audioEncoders/libADM_ae_faac.so
-%{_libdir}/ADM_plugins/audioEncoders/libADM_ae_lame.so
-%dir %{_libdir}/ADM_plugins/videoEncoder
-%if %with_x264
-%{_libdir}/ADM_plugins/videoEncoder/libADM_vidEnc_x264.so
-%dir %{_libdir}/ADM_plugins/videoEncoder/x264/
-%{_libdir}/ADM_plugins/videoEncoder/x264/*.xml
-%{_libdir}/ADM_plugins/videoEncoder/x264/*.xsd
-%endif
-%{_libdir}/ADM_plugins/videoEncoder/libADM_vidEnc_xvid.so
-%dir %{_libdir}/ADM_plugins/videoEncoder/xvid
-%{_libdir}/ADM_plugins/videoEncoder/xvid/*.xsd
-%endif
-%dir %{_libdir}/ADM_plugins/videoEncoder/avcodec
-%{_libdir}/ADM_plugins/videoEncoder/avcodec/*.xsd
-%dir %{_libdir}/ADM_plugins/videoEncoder/avcodec/mpeg-?
-%{_libdir}/ADM_plugins/videoEncoder/avcodec/mpeg-?/*.xml
-%{_libdir}/ADM_plugins/videoEncoder/libADM_vidEnc_avcodec.so
-%{_libdir}/ADM_plugins/videoEncoder/libADM_vidEnc_mpeg2enc.so
-%dir %{_libdir}/ADM_plugins/videoEncoder/mpeg2enc
-%{_libdir}/ADM_plugins/videoEncoder/mpeg2enc/*.xsd
-%dir %{_libdir}/ADM_plugins/videoEncoder/mpeg2enc/mpeg-?
-%{_libdir}/ADM_plugins/videoEncoder/mpeg2enc/mpeg-?/*.xml
-%dir %{_libdir}/ADM_plugins/videoFilter
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_Deinterlace.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_Delta.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_Denoise.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_FluxSmooth.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_Mosaic.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_Pulldown.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_Stabilize.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_Tisophote.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_Whirl.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_addborders.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_avsfilter.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_blackenBorders.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_blendDgBob.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_blendRemoval.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_decimate.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_denoise3d.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_denoise3dhq.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_dropOut.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_fade.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_fastconvolutiongauss.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_fastconvolutionmean.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_fastconvolutionmedian.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_fastconvolutionsharpen.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_forcedPP.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_hzStackField.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_keepEvenField.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_keepOddField.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_kernelDeint.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_largemedian.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_lavDeinterlace.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_logo.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_lumaonly.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_mSharpen.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_mSmooth.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_mcdeint.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_mergeField.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_palShift.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_resampleFps.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_reverse.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_rotate.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_separateField.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_smartPalShift.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_smartSwapField.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_soften.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_ssa.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_stackField.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_swapField.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_swapuv.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_tdeint.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_telecide.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_unstackField.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_vflip.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_vlad.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_yadif.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vidChromaU.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vidChromaV.so
-%{_datadir}/ADM_scripts/
-%dir %{_datadir}/ADM_addons/
-%{_datadir}/ADM_addons/avsfilter
+# man
+%{_mandir}/man1/avidemux.1.*
+# TODO: maybe split help and lang packages.
+# lang
+%dir %{_datadir}/avidemux3
+%{_datadir}/avidemux3/help/
+# help files
+%{_datadir}/avidemux3/i18n/
+#
+%{_libdir}/libADM6postproc.so.52
+%{_libdir}/libADM6avcodec.so.54
+%{_libdir}/libADM6avformat.so.54
+%{_libdir}/libADM6avutil.so.52
+%{_libdir}/libADM6swscale.so.2
+%{_libdir}/libADM_audioParser6.so
+%{_libdir}/libADM_core6.so
+%{_libdir}/libADM_coreAudio6.so
+%{_libdir}/libADM_coreAudioDevice6.so
+%{_libdir}/libADM_coreAudioEncoder6.so
+%{_libdir}/libADM_coreAudioFilterAPI6.so
+%{_libdir}/libADM_coreDemuxer6.so
+%{_libdir}/libADM_coreDemuxerMpeg6.so
+%{_libdir}/libADM_coreImage6.so
+%{_libdir}/libADM_coreImageLoader6.so
+%{_libdir}/libADM_coreJobs.so
+%{_libdir}/libADM_coreLibVA6.so
+%{_libdir}/libADM_coreMuxer6.so
+%{_libdir}/libADM_coreScript.so
+%{_libdir}/libADM_coreSocket6.so
+%{_libdir}/libADM_coreSqlLight3.so
+%{_libdir}/libADM_coreSubtitle.so
+%{_libdir}/libADM_coreUI6.so
+%{_libdir}/libADM_coreUtils6.so
+%{_libdir}/libADM_coreVDPAU6.so
+%{_libdir}/libADM_coreVideoCodec6.so
+%{_libdir}/libADM_coreVideoEncoder6.so
+%{_libdir}/libADM_coreVideoFilter6.so
+%dir %{_libdir}/ADM_plugins6
+%dir %{_libdir}/ADM_plugins6/audioDecoder
+%dir %{_libdir}/ADM_plugins6/audioDevices
+%dir %{_libdir}/ADM_plugins6/audioEncoders
+%dir %{_libdir}/ADM_plugins6/autoScripts
+%dir %{_libdir}/ADM_plugins6/autoScripts/lib
+%dir %{_libdir}/ADM_plugins6/demuxers
+%dir %{_libdir}/ADM_plugins6/muxers
+%dir %{_libdir}/ADM_plugins6/pluginSettings
+%dir %{_libdir}/ADM_plugins6/scriptEngines
+%dir %{_libdir}/ADM_plugins6/videoDecoders
+%dir %{_libdir}/ADM_plugins6/videoEncoders
+%dir %{_libdir}/ADM_plugins6/videoFilters
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_a52.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_dca.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_faad.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_ima_adpcm.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_lav.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_Mad.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_ms_adpcm.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_ulaw.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_vorbis.so
+%{_libdir}/ADM_plugins6/audioDevices/libADM_av_alsaDefault.so
+%{_libdir}/ADM_plugins6/audioDevices/libADM_av_alsaDMix.so
+%{_libdir}/ADM_plugins6/audioDevices/libADM_av_alsaHw.so
+%{_libdir}/ADM_plugins6/audioDevices/libADM_av_esd.so
+%{_libdir}/ADM_plugins6/audioDevices/libADM_av_jack.so
+%{_libdir}/ADM_plugins6/audioDevices/libADM_av_oss.so
+%{_libdir}/ADM_plugins6/audioDevices/libADM_av_pulseAudioSimple.so
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_aften.so
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_dcaenc.so
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_lav_ac3.so
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_lav_mp2.so
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_pcm.so
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_twolame.so
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_vorbis.so
+%{_libdir}/ADM_plugins6/autoScripts/720p.py
+%{_libdir}/ADM_plugins6/autoScripts/check24fps.py
+%{_libdir}/ADM_plugins6/autoScripts/dvd.py
+%{_libdir}/ADM_plugins6/autoScripts/lib/ADM_image.py
+%{_libdir}/ADM_plugins6/autoScripts/lib/ADM_imageInfo.py
+%{_libdir}/ADM_plugins6/autoScripts/PSP.py
+%{_libdir}/ADM_plugins6/autoScripts/svcd.py
+%{_libdir}/ADM_plugins6/autoScripts/vcd.py
+%{_libdir}/ADM_plugins6/demuxers/libADM_dm_asf.so
+%{_libdir}/ADM_plugins6/demuxers/libADM_dm_avsproxy.so
+%{_libdir}/ADM_plugins6/demuxers/libADM_dm_flv.so
+%{_libdir}/ADM_plugins6/demuxers/libADM_dm_matroska.so
+%{_libdir}/ADM_plugins6/demuxers/libADM_dm_mp4.so
+%{_libdir}/ADM_plugins6/demuxers/libADM_dm_mxf.so
+%{_libdir}/ADM_plugins6/demuxers/libADM_dm_opendml.so
+%{_libdir}/ADM_plugins6/demuxers/libADM_dm_pic.so
+%{_libdir}/ADM_plugins6/demuxers/libADM_dm_ps.so
+%{_libdir}/ADM_plugins6/demuxers/libADM_dm_ts.so
+%{_libdir}/ADM_plugins6/muxers/libADM_mx_avi.so
+%{_libdir}/ADM_plugins6/muxers/libADM_mx_dummy.so
+%{_libdir}/ADM_plugins6/muxers/libADM_mx_ffPS.so
+%{_libdir}/ADM_plugins6/muxers/libADM_mx_ffTS.so
+%{_libdir}/ADM_plugins6/muxers/libADM_mx_flv.so
+%{_libdir}/ADM_plugins6/muxers/libADM_mx_Mkv.so
+%{_libdir}/ADM_plugins6/muxers/libADM_mx_mp4.so
+%{_libdir}/ADM_plugins6/muxers/libADM_mx_mp4v2.so
+%{_libdir}/ADM_plugins6/muxers/libADM_mx_raw.so
+%{_libdir}/ADM_plugins6/scriptEngines/libADM_script_qt.so
+%{_libdir}/ADM_plugins6/scriptEngines/libADM_script_spiderMonkey.so
+%{_libdir}/ADM_plugins6/scriptEngines/libADM_script_tinyPy.so
+%{_libdir}/ADM_plugins6/videoDecoders/libADM_vd_vpx.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_ffDv.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_ffFlv1.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_ffMpeg2.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_ffMpeg4.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_huff.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_jpeg.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_null.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_png.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_yv12.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_hf_hflip.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_addBorders.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_avsfilter.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_blackenBorders.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_changeFps.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_colorYuv.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_decimate.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_denoise3d.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_denoise3dhq.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_DgBob.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_dummy.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_fadeToBlack.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_FluxSmooth.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_gauss.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_hzstackField.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_kernelDeint.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_largeMedian.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_lavDeint.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_logo.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_lumaOnly.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_mean.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_median.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_mergeField.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_msharpen.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_printInfo.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_removePlane.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_resampleFps.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_rotate.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_separateField.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_sharpen.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_ssa.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_stackField.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_swapUV.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_telecide.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_unstackField.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_vdpauFilter.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_vdpauFilterDeint.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_vflip.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_yadif.so
+%dir %{_datadir}/ADM6_addons
+%dir %{_datadir}/ADM6_addons/avsfilter
+%{_datadir}/ADM6_addons/avsfilter/avsload.exe
+%{_datadir}/ADM6_addons/avsfilter/pipe_source.dll
 
-%files gtk
-%defattr(-,root,root)
-%{_bindir}/avidemux2_gtk
-%{_datadir}/applications/mandriva-avidemux-gtk.desktop
-%{_libdir}/libADM_render_gtk.so
-%{_libdir}/libADM_UIGtk.so
-%if %{build_plf}
-%if %with_x264
-%{_libdir}/ADM_plugins/videoEncoder/x264/libADM_vidEnc_x264_Gtk.so
+#
+%if %with plf
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_faac.so
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_lame.so
+%{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_lav_aac.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_xvid4.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_opencore_amrnb.so
+%{_libdir}/ADM_plugins6/audioDecoder/libADM_ad_opencore_amrwb.so
+%dir %{_libdir}/ADM_plugins6/pluginSettings/x264
+%dir %{_libdir}/ADM_plugins6/pluginSettings/x264/3
+%{_libdir}/ADM_plugins6/pluginSettings/x264/3/ultraFast.json
+%{_libdir}/ADM_plugins6/pluginSettings/x264/3/PSP.json
+%{_libdir}/ADM_plugins6/pluginSettings/x264/3/veryFast.json
+%{_libdir}/ADM_plugins6/pluginSettings/x264/3/fast.json
+%{_libdir}/ADM_plugins6/pluginSettings/x264/3/iPhone.json
 %endif
-%{_libdir}/ADM_plugins/videoEncoder/xvid/libADM_vidEnc_Xvid_Gtk.so
-%endif
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_Crop_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_asharp_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_avisynthResize_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_chromaShift_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_cnr2_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_colorYUV_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_contrast_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_eq2_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_equalizer_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_hue_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_mpdelogo_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_mplayerResize_gtk.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_sub_gtk.so
+
+#%files gtk
+#%doc AUTHORS COPYING README
+#%{_datadir}/applications/mandriva-avidemux-gtk.desktop
+#%{_bindir}/avidemux3_gtk
+#%{_libdir}/libADM_render6_gtk.so
+#%{_libdir}/libADM_toolkitGtk.so
+#%{_libdir}/libADM_UIGtk6.so
+#%dir %{_libdir}/ADM_glade
+#%dir %{_libdir}/ADM_glade/main
+#%dir %{_libdir}/ADM_glade/videoFilter
+#%{_libdir}/ADM_glade/about.gtkBuilder
+#%{_libdir}/ADM_glade/avidemux_icon.png
+#%{_libdir}/ADM_glade/calculator.gtkBuilder
+#%{_libdir}/ADM_glade/DIA_alternate.gtkBuilder
+#%{_libdir}/ADM_glade/encoding.gtkBuilder
+#%{_libdir}/ADM_glade/main/avidemux_icon_small.png
+#%{_libdir}/ADM_glade/main/first-frame.png
+#%{_libdir}/ADM_glade/main/gtk2_build.gtkBuilder
+#%{_libdir}/ADM_glade/main/last-frame.png
+#%{_libdir}/ADM_glade/main/markA.png
+#%{_libdir}/ADM_glade/main/markB.png
+#%{_libdir}/ADM_glade/main/next-black-frame.png
+#%{_libdir}/ADM_glade/main/next-frame.png
+#%{_libdir}/ADM_glade/main/next-key-frame.png
+#%{_libdir}/ADM_glade/main/play.png
+#%{_libdir}/ADM_glade/main/previous-black-frame.png
+#%{_libdir}/ADM_glade/main/previous-frame.png
+#%{_libdir}/ADM_glade/main/previous-key-frame.png
+#%{_libdir}/ADM_glade/main/stop.png
+#%{_libdir}/ADM_glade/properties.gtkBuilder
+#%{_libdir}/ADM_glade/videoFilter/1.png
+#%{_libdir}/ADM_glade/videoFilter/2.png
+#%{_libdir}/ADM_glade/videoFilter/3.png
+#%{_libdir}/ADM_glade/videoFilter/4.png
+#%{_libdir}/ADM_glade/videoFilter/5.png
+#%{_libdir}/ADM_glade/videoFilter/6.png
+#%{_libdir}/ADM_glade/videoFilter/7.png
+#%{_libdir}/ADM_glade/videoFilter/add.png
+#%{_libdir}/ADM_glade/videoFilter/cd.png
+#%{_libdir}/ADM_glade/videoFilter/close.png
+#%{_libdir}/ADM_glade/videoFilter/down.png
+#%{_libdir}/ADM_glade/videoFilter/exec.png
+#%{_libdir}/ADM_glade/videoFilter/fileopen.png
+#%{_libdir}/ADM_glade/videoFilter/filesave.png
+#%{_libdir}/ADM_glade/videoFilter/filesaveas.png
+#%{_libdir}/ADM_glade/videoFilter/gl.png
+#%{_libdir}/ADM_glade/videoFilter/remove.png
+#%{_libdir}/ADM_glade/videoFilter/thumbnail.png
+#%{_libdir}/ADM_glade/videoFilter/up.png
+#%{_libdir}/ADM_glade/videoFilter/videoFilter.gtkBuilder
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_asharpGtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_chromaShiftGtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_contrastGtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_cropGtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_eq2Gtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_HueGtk.so
+#%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_swscaleResize_gtk.so
+#%if %with plf
+#%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_gtk.so
+#%endif
+
 
 %files qt
-%defattr(-,root,root)
-%{_bindir}/avidemux2_qt4
+%doc AUTHORS COPYING README
 %{_datadir}/applications/mandriva-avidemux-qt.desktop
-%dir %{_datadir}/%{name}
-%dir %{_datadir}/%{name}/i18n
-%{_datadir}/%{name}/i18n/*.qm
-%{_libdir}/libADM_render_qt4.so
-%{_libdir}/libADM_UIQT4.so
-%if %{build_plf}
-%if %with_x264
-%{_libdir}/ADM_plugins/videoEncoder/x264/libADM_vidEnc_x264_Qt.so
+%{_bindir}/avidemux3_jobs
+%{_bindir}/avidemux3_qt4
+%{_libdir}/libADM_render6_qt4.so
+%{_libdir}/libADM_UIQT46.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_asharpQt4.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_chromaShiftQt4.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_contrastQt4.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_cropQt4.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_eq2Qt4.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_glBenchmark.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_glResize.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_HueQt4.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_mpdelogoQt4.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_rotateGlFrag2.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_sampleGlFrag2.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_sampleGlVertex.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_swscaleResize_qt4.so
+%if %with plf
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_qt4.so
 %endif
-%{_libdir}/ADM_plugins/videoEncoder/xvid/libADM_vidEnc_Xvid_Qt.so
-%endif
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_crop_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_asharp_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_avisynthResize_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_chromaShift_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_cnr2_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_colorYUV_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_contrast_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_curveEditor_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_eq2_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_equalizer_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_hue_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_mpdelogo_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_mplayerResize_qt4.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_sub_qt4.so
 
 %files cli
-%defattr(-,root,root)
 %doc README
-%{_bindir}/avidemux2_cli
-%{_libdir}/libADM_render_cli.so
-%{_libdir}/libADM_UICli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_Hue_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_asharp_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_avisynthResize_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_chromashift_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_cnr2_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_colorYUV_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_contrast_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_crop_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_eq2_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_equalizer_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_mpdelogo_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_mplayerResize_cli.so
-%{_libdir}/ADM_plugins/videoFilter/libADM_vf_sub_cli.so
-
-
-%changelog
-* Wed Aug 31 2011 Andrey Bondrov <abondrov@mandriva.org> 2.5.5-4plf2011.0
-- Rebuild for restricted with all PLF features
-
-* Sun Aug 28 2011 Andrey Bondrov <abondrov@mandriva.org> 2.5.5-1mdv2012.0
-+ Revision: 697268
-- New version: 2.5.5
-
-  + Anssi Hannula <anssi@mandriva.org>
-    - plf: append "plf" to Release on cooker to make plf build have higher EVR
-      again with the rpm5-style mkrel now in use
-
-* Mon Dec 06 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.4-2mdv2011.0
-+ Revision: 612215
-- fix build with new x264
-
-* Mon Dec 06 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.4-1mdv2011.0
-+ Revision: 612166
-- new version
-- add official patches
-- enable va support
-- drop patches 4,5
-- fix build by disabling --no-undefined
-- add avsfilter and logo filter
-
-* Thu Sep 02 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.3-2mdv2011.0
-+ Revision: 575258
-- install missing libraries (bug #60877)
-
-* Wed Sep 01 2010 Anssi Hannula <anssi@mandriva.org> 2.5.3-1mdv2011.0
-+ Revision: 575026
-- update file list
-- fix build issues (from upstream):
-  o 2.5.3_mjpeg_fix.diff
-  o 2.5.3_field_asm_fix.diff
-- fix underlinking issues of mpeg2enc and jack:
-  o avidemux-mpeg2enc-underlinking.patch
-  o avidemux-jack-underlinking.patch
-
-  + Funda Wang <fwang@mandriva.org>
-    - BR yasm
-    - i18n patch not needed
-    - New version 2.5.3
-
-* Wed May 05 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.2-4mdv2010.1
-+ Revision: 542369
-- rebuild
-
-* Sat Jan 23 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.2-3mdv2010.1
-+ Revision: 495204
-- rebuild
-- reeable x264 for plf packports
-
-* Thu Jan 14 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.2-2mdv2010.1
-+ Revision: 491377
-- disable x264 build on 2010.0
-
-* Thu Jan 14 2010 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.2-1mdv2010.1
-+ Revision: 491239
-- fix build on x86_64
-- new source URL
-- update file list
-
-  + Funda Wang <fwang@mandriva.org>
-    - new version 2.5.2
-
-* Thu Dec 10 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.1-4mdv2010.1
-+ Revision: 475968
-- rebuild
-
-* Mon Nov 09 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.1-3mdv2010.1
-+ Revision: 463778
-- patch for new x264
-
-* Tue Aug 18 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.1-2mdv2010.0
-+ Revision: 417570
-- fix opencore detection
-- remove dca plugin
-- update amr build deps
-
-* Tue Aug 18 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.1-1mdv2010.0
-+ Revision: 417550
-- new version
-- drop patches 4,5,6,7,8
-- update file list
-- update deps of the GUI packages (bug #52821)
-- spec cleanup, always build plugins
-
-* Sat Jul 11 2009 Anssi Hannula <anssi@mandriva.org> 2.5.0-4mdv2010.0
-+ Revision: 394818
-- fix loading plugins on lib64 systems
-
-* Fri Jul 10 2009 Anssi Hannula <anssi@mandriva.org> 2.5.0-3mdv2010.0
-+ Revision: 394337
-- workaround to allow building plugins before installing avidemux
-- fix building plugins without lame (wrong-include.patch)
-- fix underlinking (underlinking.patch)
-- add missing buildrequires on libxv-devel
-- make requires in UIs more strict
-- drop mmx build switch, avidemux has fallbacks for non-MMX systems
-
-* Fri Jul 10 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.0-2mdv2010.0
-+ Revision: 394217
-- update the patches
-- support building the plugins (currently not in the mdv build)
-
-* Fri Jul 10 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.5.0-1mdv2010.0
-+ Revision: 394078
-- fix installation on x86_64
-- new version
-- drop patches 0,2,3
-- rediff patches 1,4
-- fix build problems
-- update file list
-- fix build with new cmake
-
-* Wed Feb 11 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.4-2mdv2009.1
-+ Revision: 339350
-- rebuild for new libfaad
-
-* Tue Feb 10 2009 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.4-1mdv2009.1
-+ Revision: 339136
-- new version
-- drop patch 3
-- fix format strings
-- update patch 2
-- disable arts
-
-  + Oden Eriksson <oeriksson@mandriva.com>
-    - lowercase ImageMagick
-
-* Mon Oct 13 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.3-2mdv2009.1
-+ Revision: 293213
-- fix for new x264
-- revert previous change
-- fix x264 encoding
-
-* Fri Jul 25 2008 Funda Wang <fwang@mandriva.org> 2.4.3-1mdv2009.0
-+ Revision: 249175
-- BR libxslt-proc
-
-  + GÃ¶tz Waschk <waschk@mandriva.org>
-    - fix buildrequires
-    - new version
-    - update build deps
-    - switch to cmake
-    - update file list
-
-* Thu Jul 24 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.2-2mdv2009.0
-+ Revision: 245445
-- update patch 2 (libdca)
-
-* Thu Jul 24 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.2-1mdv2009.0
-+ Revision: 245406
-- new version
-- drop patches 3,4
-- update build deps
-- update libtool
-- update configure options
-
-  + Pixel <pixel@mandriva.com>
-    - rpm filetriggers deprecates update_menus/update_scrollkeeper/update_mime_database/update_icon_cache/update_desktop_database/post_install_gconf_schemas
-
-* Sat May 31 2008 Funda Wang <fwang@mandriva.org> 2.4.1-4mdv2009.0
-+ Revision: 213688
-- add gentoo patches
-- rebuild for new directfb
-
-* Sun Feb 17 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.1-2mdv2008.1
-+ Revision: 170042
-- add qt gui and split the package
-
-* Sun Feb 17 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4.1-1mdv2008.1
-+ Revision: 169979
-- new version
-
-* Thu Jan 17 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4-2mdv2008.1
-+ Revision: 154479
-- rebuild
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - drop old menu
-
-* Wed Jan 02 2008 GÃ¶tz Waschk <waschk@mandriva.org> 2.4-1mdv2008.1
-+ Revision: 140518
-- new version
-
-  + Olivier Blin <blino@mandriva.org>
-    - restore BuildRoot
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - kill re-definition of %%buildroot on Pixel's request
-
-* Wed Nov 14 2007 GÃ¶tz Waschk <waschk@mandriva.org> 2.4-0.preview3.1mdv2008.1
-+ Revision: 108693
-- new version
-
-* Sat Oct 13 2007 GÃ¶tz Waschk <waschk@mandriva.org> 2.4-0.preview2.1mdv2008.1
-+ Revision: 98088
-- new version
-- drop patch
-- fix buildrequires
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - kill desktop-file-validate's 'warning: key "Encoding" in group "Desktop Entry" is deprecated'
-
-* Fri Jun 01 2007 Herton Ronaldo Krzesinski <herton@mandriva.com.br> 2.4-0.preview1.3mdv2008.0
-+ Revision: 34310
-- Rebuild with libslang2.
-
-* Tue May 22 2007 Anssi Hannula <anssi@mandriva.org> 2.4-0.preview1.2mdv2008.0
-+ Revision: 29612
-- rebuild for new directfb
-
-* Thu May 17 2007 Anssi Hannula <anssi@mandriva.org> 2.4-0.preview1.1mdv2008.0
-+ Revision: 27655
-- 2.4 preview 1
-  o fixes loading of projects
-- add cli subpackage
-- add compatibility symlink for changed binary name on <= 2007.1
-- update patch0
-
-
-* Fri Mar 23 2007 GÃ¶tz Waschk <waschk@mandriva.org> 2.3.0-7mdv2007.1
-+ Revision: 148360
-- rebuild for new firefox
-
-* Thu Mar 15 2007 Anssi Hannula <anssi@mandriva.org> 2.3.0-6mdv2007.1
-+ Revision: 144509
-- fix buildrequires
-- better description
-- use provided icons
-- fix menu categories
-- adapt package for Mandriva
-- Import avidemux
-
-* Tue Feb 27 2007 Götz Waschk <goetz@zarb.org> 2.3.0-5plf2007.1
-- rebuild for new firefox
-
-* Thu Feb 22 2007 Götz Waschk <goetz@zarb.org> 2.3.0-4plf2007.1
-- rebuild for new libgiil
-
-* Mon Jan 08 2007 Götz Waschk <goetz@zarb.org> 2.3.0-3plf2007.1
-- rebuild for new firefox
-
-* Thu Dec 07 2006 Götz Waschk <goetz@zarb.org> 2.3.0-2plf2007.1
-- fix firefox build
-
-* Sun Dec 03 2006 Götz Waschk <goetz@zarb.org> 2.3.0-1plf2007.1
-- new version
-
-* Fri Nov 17 2006 Anssi Hannula <anssi@zarb.org> 2.3-0.preview2.5plf2007.1
-- fix firefox requires on lib64 and when backporting
-
-* Thu Nov 09 2006 Götz Waschk <goetz@zarb.org> 2.3-0.preview2.4plf2007.1
-- fix mozilla dep
-
-* Thu Nov 09 2006 Götz Waschk <goetz@zarb.org> 2.3-0.preview2.3plf2007.1
-- rebuild for new firefox
-
-* Sun Oct 29 2006 Anssi Hannula <anssi@zarb.org> 2.3-0.preview2.2plf2007.1
-- disable parallel build
-
-* Fri Oct 20 2006 Götz Waschk <goetz@zarb.org> 2.3-0.preview2.1plf2007.1
-- drop the patch
-- new version
-
-* Thu Oct 19 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.10plf2007.1
-- rebuild
-
-* Tue Sep 19 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.9plf2007.0
-- rebuild
-
-* Mon Sep 18 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.8plf2007.0
-- rebuild for new firefox
-
-* Sat Sep 09 2006 Anssi Hannula <anssi@zarb.org> 2.2.0-0.preview2b.7plf2007.0
-- fix LDFLAGS for lib64 on backports
-
-* Sat Sep 09 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.6plf2007.0
-- don't apply the patch on 2006.0
-
-* Wed Aug 30 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.5plf2007.0
-- patch for new x264
-
-* Fri Aug 04 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.4plf2007.0
-- rebuild for new firefox
-
-* Tue Aug 01 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.3plf2007.0
-- Rebuild for new firefox
-
-* Sun Jul 02 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.2plf2007.0
-- rebuild
-
-* Fri Jun 23 2006 Götz Waschk <goetz@zarb.org> 2.2.0-0.preview2b.1plf2007.0
-- add xdg menu
-- new version
-
-* Sun Jun 04 2006 Götz Waschk <goetz@zarb.org> 2.1.2-5plf2007.0
-- Rebuild for new firefox
-
-* Thu May 04 2006 GÃ¶tz Waschk <goetz@zarb.org> 2.1.2-4plf
-- rebuild for new firefox
-
-* Sat Apr 22 2006 Götz Waschk <goetz@zarb.org> 2.1.2-3plf
-- rebuild for new firefox
-
-* Thu Apr 06 2006 Götz Waschk <goetz@zarb.org> 2.1.2-2plf
-- rebuild to fix firefox dep
-
-* Wed Mar 08 2006 Götz Waschk <goetz@zarb.org> 2.1.2-1plf
-- drop patch
-
-* Wed Mar 08 2006 GÃ¶tz Waschk <goetz@zarb.org> 2.1.2-1plf
-- New release 2.1.2
-
-* Fri Feb 03 2006 GÃ¶tz Waschk <goetz@zarb.org> 2.1.0-3plf
-- rebuild for new mozilla-firefox
-
-* Tue Jan 10 2006 GÃ¶tz Waschk <goetz@zarb.org> 2.1.0-2plf
-- rebuild  for new mozilla-firefox
-
-* Tue Dec 27 2005 Götz Waschk <goetz@zarb.org> 2.1.0-1plf
-- new version
-
-* Thu Oct 27 2005 Götz Waschk <goetz@zarb.org> 2.1.0-0.step3.2plf
-- rebuild for new firefox
-
-* Thu Oct 20 2005 Götz Waschk <goetz@zarb.org> 2.1.0-0.step3.1plf
-- new version
-
-* Tue Sep 27 2005 Goetz Waschk <goetz@ryu.zarb.org> 2.1.0-0.step2.2plf
-- add rpath to fix mozilla linking
-
-* Tue Sep 13 2005 Götz Waschk <goetz@zarb.org> 2.1.0-0.step2.1plf
-- enable x264
-- rediff the patch
-- new version
-
-* Wed Aug 17 2005 Götz Waschk <goetz@zarb.org> 2.1-0.step1.1plf
-- bump deps
-- drop source 4
-- new version
-
-* Thu Jun 16 2005 Götz Waschk <goetz@zarb.org> 2.0.40-1plf
-- ugly workaround for Cooker's broken gcc4
-- new version
-
-* Wed May 04 2005 Götz Waschk <goetz@zarb.org> 2.0.38-0.rc3.1plf
-- new version
-
-* Wed Apr 20 2005 Götz Waschk <goetz@zarb.org> 2.0.38-0.rc2b.2plf
-- mkrel macro
-
-* Sat Apr 02 2005 Götz Waschk <goetz@zarb.org> 2.0.38-0.rc2b.1plf
-- decompress icons
-- update buildrequires
-- enable mmx (doesn't build otherwise)
-- new version
-
-* Fri Apr 01 2005 Götz Waschk <goetz@zarb.org> 2.0.38-0.rc1.1plf
-- New release 2.0.38rc1
-
-* Thu Feb 17 2005 Götz Waschk <goetz@zarb.org> 2.0.36-1plf
-- new version
-
-* Mon Dec 06 2004 Laurent Culioli <laurent@zarb.org> 2.0.34-0.test1.1plf
-- 2.0.34-test1
-- Drop Patch0
-
-* Wed Oct 27 2004 Laurent Culioli <laurent@zarb.org> 2.0.32-1plf
-- 2.0.32
-- Patch0: mpeg ps fix.
-
-* Sat Aug 14 2004 Götz Waschk <goetz@zarb.org> 2.0.28-1plf
-- source URL
-- New release 2.0.28
-
-* Sat Jul 24 2004 Götz Waschk <goetz@plf.zarb.org> 2.0.26-1plf
-- update buildrequires
-- reenable libtoolize on cooker
-- New release 2.0.26
-
-* Mon May 10 2004 Götz Waschk <goetz@plf.zarb.org> 2.0.24-1plf
-- add source url
-- New release 2.0.24
-
-* Thu Apr 15 2004 Götz Waschk <goetz@plf.zarb.org> 2.0.22-1plf
-- don't run libtoolize
-- update description
-- drop merged patch
-- fix buildrequires
-- new version
-
+%{_bindir}/avidemux3_cli
+%{_libdir}/libADM_render6_cli.so
+%{_libdir}/libADM_UI_Cli6.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_chromaShiftCli.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_contrastCli.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_CropCli.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_eq2Cli.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_HueCli.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_mpdelogoCli.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_swscaleResize_cli.so
+%if %with plf
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_cli.so
+%endif
