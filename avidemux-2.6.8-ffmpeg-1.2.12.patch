@@ -1,0 +1,14 @@
+--- avidemux_2.6.8/avidemux_core/ffmpeg_package/patches/xvba/xvba_support_from_xbmc_xvba.patch.old	2014-07-03 12:14:17.366141626 -0400
++++ avidemux_2.6.8/avidemux_core/ffmpeg_package/patches/xvba/xvba_support_from_xbmc_xvba.patch	2014-07-03 12:17:29.456766713 -0400
+@@ -3,9 +3,9 @@
+ --- a/configure
+ +++ b/configure
+ @@ -144,6 +144,7 @@ Hardware accelerators:
+-   --enable-vaapi           enable VAAPI code
++   --disable-vaapi          disable VAAPI code [autodetect]
+    --enable-vda             enable VDA code
+-   --enable-vdpau           enable VDPAU code
++   --disable-vdpau          disable VDPAU code [autodetect]
+ +  --disable-xvba           disable XVBA code
+  
+  Individual component options:
