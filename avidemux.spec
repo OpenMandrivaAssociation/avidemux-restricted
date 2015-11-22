@@ -7,7 +7,7 @@
 # bcond_with or bcond_without
 %bcond_without plf
 #############################
-%define         ffmpeg_version 1.2.12
+%define         ffmpeg_version 2.6.4
 
 %if %with plf
 %define distsuffix plf
@@ -16,8 +16,8 @@
 %endif
 
 Name:		avidemux
-Version:	2.6.8
-Release:	2%{?extrarelsuffix}
+Version:	2.6.10
+Release:	1%{?extrarelsuffix}
 Summary:	A free video editor
 License:	GPLv2+
 Group:		Video
@@ -28,10 +28,6 @@ Source4:        xvba_support_from_xbmc_xvba.patch
 Source100:	%{name}.rpmlintrc
 
 Patch0:         avidemux-cmake-2.8.8.patch
-Patch1:         avidemux-linking.patch
-Patch2:         avidemux-x264_plugins.patch
-Patch3:         avidemux-package_version.patch
-Patch4:		avidemux-2.6.8-cmake-3.1.patch
 Patch5:		avidemux-2.6.5-compile.patch
 
 BuildRequires:	cmake
@@ -70,7 +66,11 @@ BuildRequires:  pkgconfig(twolame)
 BuildRequires:  pkgconfig(cairo)
 %if %with plf
 BuildRequires:	faac-devel
+%if %mdvver >= 201500
 BuildRequires:	faad2-devel
+%else
+BuildRequires:  libfaad2-devel
+%endif
 BuildRequires:	lame-devel
 BuildRequires:	xvid-devel
 BuildRequires:	pkgconfig(opencore-amrnb)
@@ -121,8 +121,8 @@ covered by software patents.
 # convert docs
 find . -type f -exec dos2unix -q {} \;
 # replace old ffmpeg and build it for the core.
-sed -i -e 's|set(FFMPEG_VERSION "1.2.1")|set(FFMPEG_VERSION "%{ffmpeg_version}")|g' cmake/admFFmpegBuild.cmake
-rm -f avidemux_core/ffmpeg_package/ffmpeg-1.2.1.tar.bz2
+sed -i -e 's|set(FFMPEG_VERSION "2.6.1")|set(FFMPEG_VERSION "%{ffmpeg_version}")|g' cmake/admFFmpegBuild.cmake
+rm -f avidemux_core/ffmpeg_package/ffmpeg-2.6.1.tar.bz2
 cp %{SOURCE3} avidemux_core/ffmpeg_package/
 pushd avidemux_core/ffmpeg_package/patches/xvba
 rm -f xvba_support_from_xbmc_xvba.patch
@@ -133,10 +133,6 @@ find . -type f -exec chmod -x {} \;
 
 #  patches
 %patch0 -p0
-%patch1 -p0
-%patch2 -p0
-%patch3 -p0
-%patch4 -p1
 %patch5 -p1
 
 %build
@@ -189,16 +185,14 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_mandir}/man1/avidemux.1.*
 # TODO: maybe split help and lang packages.
 # lang
-%dir %{_datadir}/avidemux3
-%{_datadir}/avidemux3/help/
+%dir %{_datadir}/avidemux6
+%{_datadir}/avidemux6/help/
 # help files
-%{_datadir}/avidemux3/i18n/
-#
-%{_libdir}/libADM6postproc.so.52
-%{_libdir}/libADM6avcodec.so.54
-%{_libdir}/libADM6avformat.so.54
-%{_libdir}/libADM6avutil.so.52
-%{_libdir}/libADM6swscale.so.2
+%{_libdir}/libADM6postproc.so.*
+%{_libdir}/libADM6avcodec.so.*
+%{_libdir}/libADM6avformat.so.*
+%{_libdir}/libADM6avutil.so.*
+%{_libdir}/libADM6swscale.so.*
 %{_libdir}/libADM_audioParser6.so
 %{_libdir}/libADM_core6.so
 %{_libdir}/libADM_coreAudio6.so
@@ -210,6 +204,7 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/libADM_coreImage6.so
 %{_libdir}/libADM_coreImageLoader6.so
 %{_libdir}/libADM_coreJobs.so
+%{_libdir}/libADM_coreLibVA6.so
 %{_libdir}/libADM_coreMuxer6.so
 %{_libdir}/libADM_coreScript.so
 %{_libdir}/libADM_coreSocket6.so
@@ -284,7 +279,6 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/muxers/libADM_mx_mp4.so
 %{_libdir}/ADM_plugins6/muxers/libADM_mx_mp4v2.so
 %{_libdir}/ADM_plugins6/muxers/libADM_mx_raw.so
-%{_libdir}/ADM_plugins6/scriptEngines/libADM_script_qt.so
 %{_libdir}/ADM_plugins6/scriptEngines/libADM_script_spiderMonkey.so
 %{_libdir}/ADM_plugins6/scriptEngines/libADM_script_tinyPy.so
 %{_libdir}/ADM_plugins6/videoDecoders/libADM_vd_vpx.so
@@ -340,7 +334,10 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %dir %{_datadir}/ADM6_addons/avsfilter
 %{_datadir}/ADM6_addons/avsfilter/avsload.exe
 %{_datadir}/ADM6_addons/avsfilter/pipe_source.dll
-
+%if %with plf
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_other.so
+%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x265_other.so
+%endif
 #
 %if %with plf
 %{_libdir}/ADM_plugins6/audioEncoders/libADM_ae_faac.so
@@ -361,25 +358,28 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %files qt
 %doc AUTHORS COPYING README
 %{_datadir}/applications/mandriva-avidemux-qt.desktop
-%{_bindir}/avidemux3_jobs
+%{_datadir}/avidemux6/qt4
+%{_bindir}/avidemux3_jobs_qt4
 %{_bindir}/avidemux3_qt4
-%{_libdir}/libADM_render6_qt4.so
 %{_libdir}/libADM_UIQT46.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_asharpQt4.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_chromaShiftQt4.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_contrastQt4.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_cropQt4.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_eq2Qt4.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_glBenchmark.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_glResize.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_HueQt4.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_mpdelogoQt4.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_rotateGlFrag2.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_sampleGlFrag2.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_sampleGlVertex.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_swscaleResize_qt4.so
+%{_libdir}/libADM_render6_QT4.so
+%{_libdir}/ADM_plugins6/scriptEngines/qt4/libadm_script_QT4.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_asharpQT4.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_chromaShiftQT4.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_contrastQT4.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_cropQT4.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_eq2QT4.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_glBenchmark.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_glResize.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_HueQT4.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_mpdelogoQT4.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_rotateGlFrag2.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_sampleGlFrag2.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_sampleGlVertex.so
+%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_swscaleResizeQT4.so
 %if %with plf
-%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_qt4.so
+%{_libdir}/ADM_plugins6/videoEncoders/qt4/libADM_ve_x264_QT4.so
+%{_libdir}/ADM_plugins6/videoEncoders/qt4/libADM_ve_x265_QT4.so
 %endif
 
 %files cli
@@ -387,13 +387,10 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_bindir}/avidemux3_cli
 %{_libdir}/libADM_render6_cli.so
 %{_libdir}/libADM_UI_Cli6.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_chromaShiftCli.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_contrastCli.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_CropCli.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_eq2Cli.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_HueCli.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_mpdelogoCli.so
-%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_swscaleResize_cli.so
-%if %with plf
-%{_libdir}/ADM_plugins6/videoEncoders/libADM_ve_x264_cli.so
-%endif
+%{_libdir}/ADM_plugins6/videoFilters/cli/libADM_vf_chromaShiftCli.so
+%{_libdir}/ADM_plugins6/videoFilters/cli/libADM_vf_contrastCli.so
+%{_libdir}/ADM_plugins6/videoFilters/cli/libADM_vf_CropCli.so
+%{_libdir}/ADM_plugins6/videoFilters/cli/libADM_vf_eq2Cli.so
+%{_libdir}/ADM_plugins6/videoFilters/cli/libADM_vf_HueCli.so
+%{_libdir}/ADM_plugins6/videoFilters/cli/libADM_vf_mpdelogoCli.so
+%{_libdir}/ADM_plugins6/videoFilters/cli/libADM_vf_swscaleResize_cli.so
