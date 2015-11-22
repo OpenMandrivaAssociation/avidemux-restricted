@@ -76,6 +76,7 @@ BuildRequires:	xvid-devel
 BuildRequires:	pkgconfig(opencore-amrnb)
 BuildRequires:	pkgconfig(opencore-amrwb)
 BuildRequires:	pkgconfig(x264)
+BuildRequires:	pkgconfig(x265)
 %endif
 Requires:	avidemux-ui = %{version}-%{release}
 
