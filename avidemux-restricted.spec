@@ -7,7 +7,7 @@
 # bcond_with or bcond_without
 %bcond_without plf
 #############################
-%define         ffmpeg_version 2.6.4
+%define         ffmpeg_version 2.7.7
 
 %if %with plf
 %define distsuffix plf
@@ -16,7 +16,7 @@
 %endif
 
 Name:		avidemux
-Version:	2.6.10
+Version:	2.6.12
 Release:	1%{?extrarelsuffix}
 Summary:	A free video editor
 License:	GPLv2+
@@ -28,7 +28,6 @@ Source4:        xvba_support_from_xbmc_xvba.patch
 Source100:	%{name}.rpmlintrc
 
 Patch0:         avidemux-cmake-2.8.8.patch
-Patch5:		avidemux-2.6.5-compile.patch
 
 BuildRequires:	cmake
 BuildRequires:	imagemagick
@@ -122,8 +121,8 @@ covered by software patents.
 # convert docs
 find . -type f -exec dos2unix -q {} \;
 # replace old ffmpeg and build it for the core.
-sed -i -e 's|set(FFMPEG_VERSION "2.6.1")|set(FFMPEG_VERSION "%{ffmpeg_version}")|g' cmake/admFFmpegBuild.cmake
-rm -f avidemux_core/ffmpeg_package/ffmpeg-2.6.1.tar.bz2
+sed -i -e 's|set(FFMPEG_VERSION "2.7.6")|set(FFMPEG_VERSION "%{ffmpeg_version}")|g' cmake/admFFmpegBuild.cmake
+rm -f avidemux_core/ffmpeg_package/ffmpeg-2.7.6.tar.bz2
 cp %{SOURCE3} avidemux_core/ffmpeg_package/
 pushd avidemux_core/ffmpeg_package/patches/xvba
 rm -f xvba_support_from_xbmc_xvba.patch

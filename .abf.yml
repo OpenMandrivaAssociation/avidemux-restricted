@@ -1,5 +1,3 @@
-removed_sources:
-  ffmpeg-1.2.12.tar.bz2: ae7328442046f2c92e7909e66e91034e8072c78b
 sources:
-  avidemux_2.6.10.tar.gz: 2999dcb0178d53fd7bbb5b4a10574bd2151d3866
-  ffmpeg-2.6.4.tar.bz2: 7a8a6d4354fbe2aadded7d03526fce3c0443ae97
+  avidemux_2.6.12.tar.gz: 29562ece98c344a7ebddad6a58a0b820bd280db9
+  ffmpeg-2.7.7.tar.bz2: b51db4a951301cdc696829de44c38dbdf3dc2f40
