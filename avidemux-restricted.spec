@@ -133,7 +133,6 @@ find . -type f -exec chmod -x {} \;
 
 #  patches
 %patch0 -p0
-%patch5 -p1
 
 %build
 export CXXFLAGS="%{optflags} -fno-strict-aliasing"
@@ -279,6 +278,7 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/muxers/libADM_mx_mp4.so
 %{_libdir}/ADM_plugins6/muxers/libADM_mx_mp4v2.so
 %{_libdir}/ADM_plugins6/muxers/libADM_mx_raw.so
+%{_libdir}/ADM_plugins6/muxers/libADM_mx_Webm.so
 %{_libdir}/ADM_plugins6/scriptEngines/libADM_script_spiderMonkey.so
 %{_libdir}/ADM_plugins6/scriptEngines/libADM_script_tinyPy.so
 %{_libdir}/ADM_plugins6/videoDecoders/libADM_vd_vpx.so
@@ -294,6 +294,7 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/videoFilters/libADM_hf_hflip.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_addBorders.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_avsfilter.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_black.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_blackenBorders.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_changeFps.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_colorYuv.so
@@ -302,6 +303,7 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_denoise3dhq.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_DgBob.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_dummy.so
+%{_libdir}/ADM_plugins6/videoFilters/libADM_vf_fadeTo.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_fadeToBlack.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_FluxSmooth.so
 %{_libdir}/ADM_plugins6/videoFilters/libADM_vf_gauss.so
@@ -362,6 +364,7 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %{_bindir}/avidemux3_jobs_qt4
 %{_bindir}/avidemux3_qt4
 %{_libdir}/libADM_UIQT46.so
+%{_libdir}/libADM_openGLQT46.so
 %{_libdir}/libADM_render6_QT4.so
 %{_libdir}/ADM_plugins6/scriptEngines/qt4/libadm_script_QT4.so
 %{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_asharpQT4.so
