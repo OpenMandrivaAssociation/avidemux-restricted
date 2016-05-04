@@ -17,7 +17,7 @@
 
 Name:		avidemux
 Version:	2.6.12
-Release:	1%{?extrarelsuffix}
+Release:	2%{?extrarelsuffix}
 Summary:	A free video editor
 License:	GPLv2+
 Group:		Video
@@ -28,22 +28,29 @@ Source4:        xvba_support_from_xbmc_xvba.patch
 Source100:	%{name}.rpmlintrc
 
 Patch0:         avidemux-cmake-2.8.8.patch
+Patch1:		avidemux-2.6.12-compile.patch
 
 BuildRequires:	cmake
 BuildRequires:	imagemagick
 BuildRequires:	xsltproc
 BuildRequires:	nasm
-BuildRequires:	qt4-linguist
 BuildRequires:	yasm
 BuildRequires:	gettext-devel
 BuildRequires:  intltool
 BuildRequires:  dos2unix
+BuildRequires:	pkgconfig(Qt5Core)
+BuildRequires:	pkgconfig(Qt5Gui)
+BuildRequires:	pkgconfig(Qt5OpenGL)
+BuildRequires:	pkgconfig(Qt5Script)
+BuildRequires:	pkgconfig(Qt5Widgets)
+BuildRequires:	qmake5
+BuildRequires:	qt5-linguist-tools
+BuildRequires:	qt5-qttools
 BuildRequires:  pkgconfig(fontconfig)
 BuildRequires:  pkgconfig(freetype2)
 BuildRequires:  pkgconfig(mozjs185)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(samplerate)
-BuildRequires:	qt4-devel
 BuildRequires:	pkgconfig(gdk-3.0)
 BuildRequires:	pkgconfig(jack)
 BuildRequires:	pkgconfig(libpulse)
@@ -133,12 +140,15 @@ find . -type f -exec chmod -x {} \;
 
 #  patches
 %patch0 -p0
+%patch1 -p1
 
 %build
 export CXXFLAGS="%{optflags} -fno-strict-aliasing"
 
+export PATH=%{_libdir}/qt5/bin:$PATH
+
 chmod 755 bootStrap.bash
-./bootStrap.bash --with-cli
+./bootStrap.bash --with-cli --enable-qt5
 
 %install
 cp -r install/* %{buildroot}
@@ -157,7 +167,7 @@ cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}-qt.desktop << EOF
 [Desktop Entry]
 Name=Avidemux
 Comment=A free video editor
-Exec=%{_bindir}/%{name}3_qt4 %U
+Exec=%{_bindir}/%{name}3_qt5 %U
 Icon=%{name}
 Terminal=false
 Type=Application
@@ -360,29 +370,29 @@ rm -rf %{buildroot}%{_datadir}/locale/klingon
 %files qt
 %doc AUTHORS COPYING README
 %{_datadir}/applications/mandriva-avidemux-qt.desktop
-%{_datadir}/avidemux6/qt4
-%{_bindir}/avidemux3_jobs_qt4
-%{_bindir}/avidemux3_qt4
-%{_libdir}/libADM_UIQT46.so
-%{_libdir}/libADM_openGLQT46.so
-%{_libdir}/libADM_render6_QT4.so
-%{_libdir}/ADM_plugins6/scriptEngines/qt4/libadm_script_QT4.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_asharpQT4.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_chromaShiftQT4.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_contrastQT4.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_cropQT4.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_eq2QT4.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_glBenchmark.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_glResize.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_HueQT4.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_mpdelogoQT4.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_rotateGlFrag2.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_sampleGlFrag2.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_sampleGlVertex.so
-%{_libdir}/ADM_plugins6/videoFilters/qt4/libADM_vf_swscaleResizeQT4.so
+%{_datadir}/avidemux6/qt5
+%{_bindir}/avidemux3_jobs_qt5
+%{_bindir}/avidemux3_qt5
+%{_libdir}/libADM_UIQT56.so
+%{_libdir}/libADM_openGLQT56.so
+%{_libdir}/libADM_render6_QT5.so
+%{_libdir}/ADM_plugins6/scriptEngines/qt5/libadm_script_QT5.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_asharpQT5.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_chromaShiftQT5.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_contrastQT5.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_cropQT5.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_eq2QT5.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_glBenchmark.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_glResize.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_HueQT5.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_mpdelogoQT5.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_rotateGlFrag2.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_sampleGlFrag2.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_sampleGlVertex.so
+%{_libdir}/ADM_plugins6/videoFilters/qt5/libADM_vf_swscaleResizeQT5.so
 %if %with plf
-%{_libdir}/ADM_plugins6/videoEncoders/qt4/libADM_ve_x264_QT4.so
-%{_libdir}/ADM_plugins6/videoEncoders/qt4/libADM_ve_x265_QT4.so
+%{_libdir}/ADM_plugins6/videoEncoders/qt5/libADM_ve_x264_QT5.so
+%{_libdir}/ADM_plugins6/videoEncoders/qt5/libADM_ve_x265_QT5.so
 %endif
 
 %files cli

@@ -2,12 +2,12 @@ diff --git a/avidemux/common/ADM_render/CMakeLists.txt b/avidemux/common/ADM_ren
 index e206a77..10685a9 100644
 --- a/avidemux/common/ADM_render/CMakeLists.txt
 +++ b/avidemux/common/ADM_render/CMakeLists.txt
-@@ -21,7 +21,7 @@ ENDIF (APPLE)
+@@ -27,7 +27,7 @@
  
  add_compiler_export_flags()
  ADD_LIBRARY(${ADM_LIB} SHARED ${${ADM_LIB}_SRCS})
 -TARGET_LINK_LIBRARIES( ${ADM_LIB} ADM_core6 ADM_coreUI6 ADM_coreImage6)
 +TARGET_LINK_LIBRARIES( ${ADM_LIB} ADM_core6 ADM_coreUI6 ADM_coreImage6 -lX11 -lXext)
  
- IF (USE_OPENGL)
- 	ADD_SOURCE_CFLAGS(GUI_render.cpp " -I${QT_HEADERS_DIR}")
+ ADM_OPEN_GL(${ADM_LIB})
+ 
