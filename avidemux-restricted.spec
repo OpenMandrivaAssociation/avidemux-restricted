@@ -8,7 +8,7 @@
 #############################
 # Hardcore PLF build
 # bcond_with or bcond_without
-%bcond_with plf
+%bcond_without plf
 #############################
 
 %if %with plf
