@@ -1,0 +1,20 @@
+--- avidemux_2.5.1/cmake/admCheckOpencore.cmake~	2009-07-15 21:37:44.000000000 +0200
++++ avidemux_2.5.1/cmake/admCheckOpencore.cmake	2009-08-18 10:02:41.736531970 +0200
+@@ -6,7 +6,7 @@
+ 		MESSAGE(STATUS "***************************")
+ 
+ 		IF (OPENCORE_AMRNB)
+-			FIND_HEADER_AND_LIB(OPENCORE_AMRNB opencore-amrnb/interf_dec.h opencore-amrnb Decoder_Interface_init)
++			FIND_HEADER_AND_LIB(OPENCORE_AMRNB opencore-amrnb/interf_dec.h opencore-amrnb Decoder_Interface_init stdc++)
+ 			PRINT_LIBRARY_INFO("opencore-amrnb" OPENCORE_AMRNB_FOUND "${OPENCORE_AMRNB_INCLUDE_DIR}" "${OPENCORE_AMRNB_LIBRARY_DIR}")
+ 		ELSE (OPENCORE_AMRNB)
+ 			MESSAGE("${MSG_DISABLE_OPTION}")
+@@ -27,7 +27,7 @@
+ 		MESSAGE(STATUS "***************************")
+ 
+ 		IF (OPENCORE_AMRWB)
+-			FIND_HEADER_AND_LIB(OPENCORE_AMRWB opencore-amrwb/dec_if.h opencore-amrwb D_IF_init)
++			FIND_HEADER_AND_LIB(OPENCORE_AMRWB opencore-amrwb/dec_if.h opencore-amrwb D_IF_init stdc++)
+ 			PRINT_LIBRARY_INFO("opencore-amrwb" OPENCORE_AMRWB_FOUND "${OPENCORE_AMRWB_INCLUDE_DIR}" "${OPENCORE_AMRWB_LIBRARY_DIR}")
+ 		ELSE (OPENCORE_AMRWB)
+ 			MESSAGE("${MSG_DISABLE_OPTION}")
