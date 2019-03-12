@@ -1,0 +1,11 @@
+--- avidemux_2.6.4/avidemux_plugins/ADM_audioDevices/Jack/CMakeLists.txt.0003~	2013-06-17 12:09:23.109999633 +0200
++++ avidemux_2.6.4/avidemux_plugins/ADM_audioDevices/Jack/CMakeLists.txt	2013-06-17 12:09:53.217623236 +0200
+@@ -4,7 +4,7 @@ INCLUDE(av_plugin)
+ SET(ADM_av_jack_SRCS ADM_deviceJack.cpp)
+ 
+ ADD_AUDIO_DEVICE(ADM_av_jack  ${ADM_av_jack_SRCS})
+-TARGET_LINK_LIBRARIES(ADM_av_jack ${JACK_LIBRARY_DIR})
++TARGET_LINK_LIBRARIES(ADM_av_jack ADM_coreAudio6 ${JACK_LIBRARY_DIR})
+ include_directories(${JACK_INCLUDE_DIR})
+ 
+ INIT_AUDIO_DEVICE(ADM_av_jack)
