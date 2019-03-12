@@ -1,0 +1,22 @@
+--- avidemux_2.6.4/cmake/admCheckRequiredLibs.cmake.0004~	2013-06-17 12:10:03.072500033 +0200
++++ avidemux_2.6.4/cmake/admCheckRequiredLibs.cmake	2013-06-17 12:10:49.866915023 +0200
+@@ -7,18 +7,7 @@
+ MESSAGE(STATUS "Checking for pkg-config")
+ MESSAGE(STATUS "***********************")
+ 
+-FIND_PACKAGE(PkgConfig)
+-
+-if (${CMAKE_VERSION} VERSION_EQUAL 2.8.8)
+-	# workaround for bug in CMake 2.8.8 (http://www.cmake.org/Bug/view.php?id=13125)
+-        if (DEFINED PKGCONFIG_FOUND)
+-          set(PKG_CONFIG_FOUND ${PKGCONFIG_FOUND})
+-       endif (DEFINED PKGCONFIG_FOUND)
+-endif (${CMAKE_VERSION} VERSION_EQUAL 2.8.8)
+-
+-IF (NOT PKG_CONFIG_FOUND)
+-	MESSAGE(FATAL_ERROR "Could not find pkg-config")
+-ENDIF (NOT PKG_CONFIG_FOUND)
++FIND_PACKAGE(PkgConfig REQUIRED)
+ 
+ MESSAGE(STATUS "Found pkg-config")
+ 
