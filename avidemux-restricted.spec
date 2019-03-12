@@ -69,8 +69,8 @@ BuildRequires: pkgconfig(ffnvcodec)
 # not packaged yet:
 #BuildRequires:  libaften-devel
 %if %with plf
-BuildRequires:	libfaac-devel
-BuildRequires:	libfaad2-devel
+BuildRequires:	faac-devel
+BuildRequires:	faad2-devel
 BuildRequires: pkgconfig(libdca)
 BuildRequires:	libxvid-devel
 BuildRequires:	pkgconfig(opencore-amrnb)
