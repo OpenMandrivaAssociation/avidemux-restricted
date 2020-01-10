@@ -159,7 +159,7 @@ dos2unix avidemux/common/ADM_render/CMakeLists.txt
 #rm -f avidemux_core/ffmpeg_package/ffmpeg-*.tar.bz2
 #cp %{SOURCE1} avidemux_core/ffmpeg_package/
 
-%apply_patches
+%autopatch -p1
 
 
 %build
