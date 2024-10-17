@@ -23,7 +23,7 @@ Version:	2.7.2
 Release:	1%{?extrarelsuffix}
 License:	GPLv2+
 Group:		Video
-Url:		http://fixounet.free.fr/avidemux
+Url:		https://fixounet.free.fr/avidemux
 Source0:	http://www.fosshub.com/Avidemux.html/avidemux_%{version}.tar.gz
 #Source1:	ffmpeg-%{ffmpeg_version}.tar.bz2
 Source100:	%{name}.rpmlintrc
